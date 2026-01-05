@@ -1,11 +1,6 @@
 // src/components/ProjectSlider.jsx
 import { useRef } from 'react'
 
-/**
- * 슬라이더 화살표 컨트롤 컴포넌트
- * - Hook 사용 ❌
- * - ref를 props로 전달받음
- */
 function SliderControls({ sliderRef }) {
   return (
     <div className='flex space-x-4'>
@@ -26,10 +21,6 @@ function SliderControls({ sliderRef }) {
   )
 }
 
-/**
- * 프로젝트 슬라이더 컴포넌트
- * - useRef는 여기서만 사용 ✅
- */
 export default function ProjectSlider() {
   const sliderRef = useRef(null)
 

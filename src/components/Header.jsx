@@ -14,7 +14,7 @@ export default function Header() {
           <a href='#about' className='hover:text-orange-400'>
             ABOUT
           </a>
-          <Link to='/projects' className='hover:text-orange-400'>
+          <Link to='/projectshome' className='hover:text-orange-400'>
             PROJECT
           </Link>
           <a href='#' className='hover:text-orange-400'>
