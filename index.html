@@ -1,13 +1,150 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>likelion14th_homepage</title>
+    <title>프로젝트 - 멋쟁이사자처럼</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind configuration for dark theme and custom colors
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              accent: {
+                light: '#fddc96',
+                DEFAULT: '#FFA500',
+                dark: '#ff8c00',
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Custom scrollbar styling for the horizontal slider */
+      ::-webkit-scrollbar {
+        height: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #444;
+        border-radius: 4px;
+      }
+    </style>
   </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+  <body class="bg-black text-white font-sans">
+    <!-- Page Header -->
+    <header class="w-full border-b border-gray-700">
+      <div class="max-w-7xl mx-auto flex items-center justify-between px-4 py-4">
+        <!-- Logo / Title -->
+        <h1 class="text-lg font-bold">광운대 멋쟁이 사자처럼</h1>
+        <!-- Navigation (visible on medium screens and larger) -->
+        <nav class="hidden md:flex space-x-6">
+          <a href="#" class="hover:text-accent">ABOUT</a>
+          <a href="#" class="hover:text-accent">PROJECT</a>
+          <a href="#" class="hover:text-accent">BLOG</a>
+          <a href="#" class="hover:text-accent">TEAM</a>
+          <a href="#" class="hover:text-accent border px-3 py-1 rounded-full border-accent">지원하기</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="min-h-screen overflow-x-hidden">
+      <!-- Hero Section with large background text -->
+      <section class="relative overflow-hidden py-24">
+        <!-- Faded background heading text -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <h2 class="text-6xl md:text-8xl font-extrabold tracking-tight text-white/20 uppercase whitespace-nowrap">
+            Our Projects
+          </h2>
+        </div>
+        <div class="max-w-7xl mx-auto relative z-10">
+          <div class="flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-8">
+            <!-- Left side: section label and navigation buttons -->
+            <div class="flex flex-col items-start space-y-6 w-full md:w-1/4 px-4">
+              <h3 class="text-3xl font-bold">Works</h3>
+              <!-- Arrow buttons to scroll the horizontal slider -->
+              <div class="flex space-x-4">
+                <button id="scrollLeft" class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-600 hover:bg-gray-700">
+                  &larr;
+                </button>
+                <button id="scrollRight" class="w-12 h-12 flex items-center justify-center rounded-full border border-gray-600 hover:bg-gray-700">
+                  &rarr;
+                </button>
+              </div>
+              <!-- Link to more projects page -->
+              <a href="projects.html" class="mt-4 inline-block px-4 py-2 border border-gray-600 rounded-full hover:bg-gray-700">More project?</a>
+            </div>
+            <!-- Right side: horizontally scrollable list of project cards -->
+            <div class="flex-1 w-full overflow-x-auto">
+              <div id="projectSlider" class="flex space-x-6 pb-4">
+                <!-- Individual project cards -->
+                <!-- Card 1 -->
+                <div class="min-w-[280px] sm:min-w-[300px] bg-gradient-to-br from-gray-800 via-gray-700 to-black rounded-xl p-4 flex-shrink-0">
+                  <div class="flex flex-col items-start space-y-4">
+                    <img src="440c1ce1-b5a7-4f94-80ff-1ee9bbf75b7b.png" alt="KW-Vizer" class="w-24 h-24 rounded-full object-cover bg-gray-600" />
+                    <div>
+                      <h4 class="text-xl font-bold">KW-Vizer</h4>
+                      <p class="text-sm text-gray-400 mt-1">학사정보 기반 AI 진로 상담 챗봇</p>
+                    </div>
+                    <span class="ml-auto text-4xl font-bold text-gray-700 opacity-40">01</span>
+                  </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="min-w-[280px] sm:min-w-[300px] bg-gradient-to-br from-gray-800 via-gray-700 to-black rounded-xl p-4 flex-shrink-0">
+                  <div class="flex flex-col items-start space-y-4">
+                    <img src="440c1ce1-b5a7-4f94-80ff-1ee9bbf75b7b.png" alt="KW-Vizer" class="w-24 h-24 rounded-full object-cover bg-gray-600" />
+                    <div>
+                      <h4 class="text-xl font-bold">KW-Vizer</h4>
+                      <p class="text-sm text-gray-400 mt-1">학사정보 기반 AI 진로 상담 챗봇</p>
+                    </div>
+                    <span class="ml-auto text-4xl font-bold text-gray-700 opacity-40">02</span>
+                  </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="min-w-[280px] sm:min-w-[300px] bg-gradient-to-br from-gray-800 via-gray-700 to-black rounded-xl p-4 flex-shrink-0">
+                  <div class="flex flex-col items-start space-y-4">
+                    <img src="440c1ce1-b5a7-4f94-80ff-1ee9bbf75b7b.png" alt="KW-Vizer" class="w-24 h-24 rounded-full object-cover bg-gray-600" />
+                    <div>
+                      <h4 class="text-xl font-bold">KW-Vizer</h4>
+                      <p class="text-sm text-gray-400 mt-1">학사정보 기반 AI 진로 상담 챗봇</p>
+                    </div>
+                    <span class="ml-auto text-4xl font-bold text-gray-700 opacity-40">03</span>
+                  </div>
+                </div>
+                <!-- Additional cards can be added similarly -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="border-t border-gray-700 py-6">
+      <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-sm text-gray-500">© 2025 LIKELION KWUNIV</p>
+        <div class="flex space-x-4 mt-4 md:mt-0 text-gray-500">
+          <a href="#" class="hover:text-accent">Contact us!</a>
+          <a href="#" class="hover:text-accent">⌂</a>
+          <a href="#" class="hover:text-accent">✉</a>
+          <a href="#" class="hover:text-accent">📷</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Simple script for horizontal scroll buttons -->
+    <script>
+      const slider = document.getElementById('projectSlider');
+      document.getElementById('scrollLeft').addEventListener('click', () => {
+        slider.scrollBy({ left: -300, behavior: 'smooth' });
+      });
+      document.getElementById('scrollRight').addEventListener('click', () => {
+        slider.scrollBy({ left: 300, behavior: 'smooth' });
+      });
+    </script>
   </body>
 </html>
