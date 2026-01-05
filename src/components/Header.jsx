@@ -10,7 +10,7 @@ export default function Header() {
           광운대 멋쟁이 사자처럼
         </Link>
 
-        <nav className='hidden md:flex space-x-6 text-sm'>
+        <nav className='md:flex space-x-6 text-sm'>
           <a href='#about' className='hover:text-orange-400'>
             ABOUT
           </a>
