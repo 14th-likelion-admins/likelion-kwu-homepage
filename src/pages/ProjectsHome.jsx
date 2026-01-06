@@ -1,27 +1,46 @@
 // src/pages/ProjectsHome.jsx
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import bkImage1 from '../assets/bk-image-1.png'
 import noiseTexture from '../assets/noise-texture.png'
-import projectImage1 from '../assets/projects-image-1.png'
-import projectImage2 from '../assets/projects-image-2.png'
-import projectImage3 from '../assets/projects-image-3.png'
-import projectImage4 from '../assets/projects-image-4.png'
-import projectImage5 from '../assets/projects-image-5.png'
+import { getAllProjects, getLatestProjects } from '../data/projectsData'
+import ProjectDetailModal from '../components/ProjectDetailModal'
 
-// 피그마 디자인 기준: 1728x1114 (데스크탑)
+/**
+ * ============================================================================
+ * ProjectsHome 페이지
+ * ============================================================================
+ * 
+ * 이 페이지는 프로젝트 홈 화면으로, 다음 기능을 제공합니다:
+ * - 무한 스크롤 마퀴 텍스트 ("OUR PROJECTS - EXPLORE")
+ * - 최신 프로젝트 5개의 카드 슬라이더
+ * - 프로젝트 카드 클릭 시 상세 모달 표시
+ * 
+ * 디자인 기준:
+ * - 피그마 디자인: 1728x1114 (데스크탑)
+ * - 반응형 스케일링 적용
+ * ============================================================================
+ */
+
+// 피그마 디자인 기준 크기 (데스크탑)
 const DESIGN_WIDTH = 1728
 const DESIGN_HEIGHT = 1114
 
-// 무한 마퀴 텍스트 컴포넌트
+/**
+ * 무한 스크롤 마퀴 텍스트 컴포넌트
+ * 
+ * "OUR PROJECTS - EXPLORE" 텍스트가 무한히 스크롤되는 애니메이션을 제공합니다.
+ * 
+ * @param {number} scale - 화면 크기에 따른 스케일 비율
+ */
 export const ProjectsShowcaseSection = ({ scale }) => {
   const marqueeText = 'OUR PROJECTS - EXPLORE'
   const marqueeItems = [marqueeText, marqueeText, marqueeText]
 
   const fontSize = 220 * scale
   const lineHeight = 281 * scale
-  const topPosition = 120 * scale // 위로 올림 (기존 190에서 120으로)
+  const topPosition = 120 * scale 
   const height = 293 * scale
 
   return (
@@ -57,6 +76,8 @@ export const ProjectsShowcaseSection = ({ scale }) => {
 export default function ProjectsHome() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [scale, setScale] = useState(1)
+  const [selectedProject, setSelectedProject] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   // 화면 크기에 따라 스케일 계산 (데스크탑/노트북만)
   useEffect(() => {
@@ -77,48 +98,74 @@ export default function ProjectsHome() {
     return () => window.removeEventListener('resize', calculateLayout)
   }, [])
 
-  const projects = [
-    { id: 1, image: projectImage1, title: 'KW-VIZER', desc: '학사정보 기반 AI 진로 상담 챗봇' },
-    { id: 2, image: projectImage2, title: 'Project 2', desc: '프로젝트 설명' },
-    { id: 3, image: projectImage3, title: 'Project 3', desc: '프로젝트 설명' },
-    { id: 4, image: projectImage4, title: 'Project 4', desc: '프로젝트 설명' },
-    { id: 5, image: projectImage5, title: 'Project 5', desc: '프로젝트 설명' },
-  ]
+  // ============================================================================
+  // 최신 프로젝트 데이터 로드
+  // ============================================================================
+  // getLatestProjects(5)를 사용하여 숫자가 가장 큰 프로젝트 5개를 가져옵니다.
+  // 각 프로젝트의 썸네일 이미지를 사용하며, 썸네일이 없으면 메인 이미지를 사용합니다.
+  // 전체 프로젝트 데이터를 한 번만 가져와서 재사용합니다.
+  // ============================================================================
+  const allProjects = getAllProjects()
+  const latestProjects = getLatestProjects(5)
+  const projects = latestProjects.map((project) => ({
+    id: project.id,
+    image: project.thumbnail || project.image, // 썸네일 이미지 우선 사용, 없으면 메인 이미지 fallback
+    title: project.title,
+    desc: project.description,
+  }))
 
+  // ============================================================================
+  // 슬라이더 네비게이션 함수
+  // ============================================================================
+  
+  /**
+   * 다음 프로젝트 카드로 이동
+   * 
+   * 동작 조건:
+   * - 5번 카드가 초기 1번 카드 자리에 올 때까지 이동 가능
+   * - 화면에 3개 카드가 보이므로, 5번 카드가 1번 자리에 오려면 4번 카드까지 사라져야 함
+   * - 즉, currentIndex가 3이 되면 4번 카드가 사라지고 5번 카드가 1번 자리에 옴
+   * - 이 시점에서 > 버튼이 비활성화됨
+   */
   const handleNext = () => {
-    if (currentIndex < projects.length - 3) {
+    if (currentIndex < projects.length - 2) {
       setCurrentIndex(currentIndex + 1)
     }
   }
 
+  /**
+   * 이전 프로젝트 카드로 이동
+   * 
+   * 동작 조건:
+   * - currentIndex가 0보다 클 때만 이동 가능
+   * - currentIndex가 0이면 < 버튼이 비활성화됨
+   */
   const handlePrev = () => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1)
     }
   }
 
-  // 데스크탑 기준 위치 계산 (위로 이동하여 footer와 겹치지 않게)
   const cardWidth = 545 * scale
   const cardHeight = 364 * scale
   const cardGap = 48 * scale
-  const firstCardLeft = `${(437 + 200 + 100) * scale}px` // 우측으로 300px 이동 (200 + 100)
-  // OUR PROJECTS 위치 변경 (120) + 높이(293) + 간격(92)에서 간격을 줄여서 위로 이동
-  const firstCardTop = (120 + 293 + 60 - 200 + 120) * scale // 하단으로 120px 이동
-  const worksLeftValue = (73 + 30 + 50 + 30 + 20 + 20) * scale // Works 텍스트의 left 값 (버튼들과 공유)
+  const firstCardLeft = `${(437 + 200 + 100) * scale}px`
+  const firstCardTop = (120 + 293 + 60 - 200 + 120) * scale
+  const worksLeftValue = (73 + 30 + 50 + 30 + 20 + 20) * scale
   const worksLeft = `${worksLeftValue}px`
-  const worksTop = (626 - 50 - 8) * scale // 50px 위로 이동 + 상단으로 8px 추가 이동
-  const worksTextLeftValue = worksLeftValue + 5 * scale // Works 텍스트만 우측으로 5px 추가 이동
-  const buttonSize = 100 * scale // 100x100으로 변경
-  const leftButtonLeftValue = worksLeftValue // Works의 W 아래에 위치하도록 (Works와 동일한 left 값)
+  const worksTop = (626 - 50 - 8) * scale
+  const worksTextLeftValue = worksLeftValue + 5 * scale
+  const buttonSize = 100 * scale
+  const leftButtonLeftValue = worksLeftValue
   const leftButtonLeft = `${leftButtonLeftValue}px`
-  const leftButtonTop = (710 - 50) * scale // 50px 위로 이동
-  const buttonGap = 20 * scale // 버튼 간격
-  const rightButtonLeftValue = leftButtonLeftValue + buttonSize + buttonGap // < 화살표 오른쪽에 나란히
+  const leftButtonTop = (710 - 50) * scale
+  const buttonGap = 20 * scale
+  const rightButtonLeftValue = leftButtonLeftValue + buttonSize + buttonGap
   const rightButtonLeft = `${rightButtonLeftValue}px`
-  const rightButtonTop = (710 - 50) * scale // 50px 위로 이동
-  const moreButtonLeftValue = leftButtonLeftValue // < 화살표 아래에 위치하도록
+  const rightButtonTop = (710 - 50) * scale
+  const moreButtonLeftValue = leftButtonLeftValue
   const moreButtonLeft = `${moreButtonLeftValue}px`
-  const moreButtonTop = (838 - 50) * scale // 50px 위로 이동
+  const moreButtonTop = (838 - 50) * scale
 
   // 데스크탑 레이아웃만
   return (
@@ -133,7 +180,7 @@ export default function ProjectsHome() {
       <Header />
 
       <main className="relative h-full pt-20" style={{ height: 'calc(100vh - 80px)' }}>
-        {/* 배경 이미지 - 화면 최하단에 고정 */}
+        {/* 배경 이미지 */}
         <div
           className="fixed bg-center bg-no-repeat"
           style={{
@@ -149,7 +196,7 @@ export default function ProjectsHome() {
           }}
         />
 
-        {/* 배경 노이즈 텍스처 - 화면 최하단에 딱 맞게 배치 */}
+        {/* 배경 노이즈 텍스처 */}
         <div
           className="fixed opacity-30 mix-blend-overlay"
           style={{
@@ -232,7 +279,7 @@ export default function ProjectsHome() {
               {/* 우측 화살표 버튼 */}
               <button
                 onClick={handleNext}
-                disabled={currentIndex >= projects.length - 3}
+                disabled={currentIndex >= projects.length - 2}
                 className="absolute rounded-full border transition-opacity disabled:opacity-50 active:opacity-70 flex items-center justify-center focus:outline-none"
                 onMouseDown={(e) => {
                   e.currentTarget.style.opacity = '0.7'
@@ -312,32 +359,41 @@ export default function ProjectsHome() {
                     width: `${(cardWidth + cardGap) * projects.length - cardGap}px`,
                   }}
                 >
-                  {projects.map((project, index) => (
-                    <div
-                      key={project.id}
-                      className="flex-shrink-0 relative rounded-xl border bg-[#1A1A1A]"
-                      style={{
-                        width: `${cardWidth}px`,
-                        height: `${cardHeight}px`,
-                        marginRight: index < projects.length - 1 ? `${cardGap}px` : '0',
-                        borderColor: '#FFFFFF',
-                        boxShadow: '0px 2px 4px rgba(255, 255, 255, 0.15)',
-                      }}
-                      onMouseEnter={(e) => {
-                        const numberEl = e.currentTarget.querySelector('.project-number')
-                        if (numberEl) {
-                          numberEl.style.color = '#FB923C'
-                          numberEl.style.textShadow = '0 0 6px rgba(251, 146, 60, 0.5), 0 0 10px rgba(251, 146, 60, 0.3)'
-                        }
-                      }}
-                      onMouseLeave={(e) => {
-                        const numberEl = e.currentTarget.querySelector('.project-number')
-                        if (numberEl) {
-                          numberEl.style.color = '#5E5E5E'
-                          numberEl.style.textShadow = 'none'
-                        }
-                      }}
-                    >
+                  {projects.map((project, index) => {
+                    // 전체 프로젝트 데이터에서 상세 정보 가져오기 (이미 위에서 가져온 allProjects 사용)
+                    const fullProject = allProjects.find((p) => p.id === project.id)
+                    return (
+                      <div
+                        key={project.id}
+                        onClick={() => {
+                          if (fullProject && fullProject.detail) {
+                            setSelectedProject(fullProject)
+                            setIsModalOpen(true)
+                          }
+                        }}
+                        className="flex-shrink-0 relative rounded-xl border bg-[#1A1A1A] block cursor-pointer hover:opacity-90 transition-opacity"
+                        style={{
+                          width: `${cardWidth}px`,
+                          height: `${cardHeight}px`,
+                          marginRight: index < projects.length - 1 ? `${cardGap}px` : '0',
+                          borderColor: '#FFFFFF',
+                          boxShadow: '0px 2px 4px rgba(255, 255, 255, 0.15)',
+                        }}
+                        onMouseEnter={(e) => {
+                          const numberEl = e.currentTarget.querySelector('.project-number')
+                          if (numberEl) {
+                            numberEl.style.color = '#FB923C'
+                            numberEl.style.textShadow = '0 0 6px rgba(251, 146, 60, 0.5), 0 0 10px rgba(251, 146, 60, 0.3)'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          const numberEl = e.currentTarget.querySelector('.project-number')
+                          if (numberEl) {
+                            numberEl.style.color = '#5E5E5E'
+                            numberEl.style.textShadow = 'none'
+                          }
+                        }}
+                      >
                       {/* 프로젝트 이미지 */}
                       <div
                         className="absolute"
@@ -401,13 +457,24 @@ export default function ProjectsHome() {
                         {String(index + 1).padStart(2, '0')}
                       </div>
                     </div>
-                  ))}
+                  )
+                  })}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
+
+      {/* 프로젝트 상세 모달 */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+          setSelectedProject(null)
+        }}
+      />
     </div>
   )
 }

@@ -1,8 +1,18 @@
-// src/pages/Projects.jsx
+/**
+ * ============================================================================
+ * Projects.jsx - 프로젝트 목록 페이지
+ * ============================================================================
+ * 
+ * 프로젝트 목록을 표시하고, 필터링 및 무한 스크롤 기능을 제공하는 페이지입니다.
+ * 
+ * ============================================================================
+ */
+
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import Header from '../components/Header'
-import projectImage1 from '../assets/projects-image-1.png'
+import ProjectDetailModal from '../components/ProjectDetailModal'
+import { getAllProjects } from '../data/projectsData'
 
 export default function Projects() {
   const [selectedGeneration, setSelectedGeneration] = useState('기수')
@@ -12,18 +22,17 @@ export default function Projects() {
   const [displayedProjects, setDisplayedProjects] = useState(12) // 초기 표시 개수
   const [isLoading, setIsLoading] = useState(false)
   const observerTarget = useRef(null)
+  const [selectedProject, setSelectedProject] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const [searchParams] = useSearchParams()
+  const projectIdParam = searchParams.get('id')
 
   const generations = ['13TH', '14TH', '15TH']
   const activities = ['중앙해커톤', '권역별 연합해커톤', '아이디어톤']
 
-  // 프로젝트 데이터 (13개로 제한)
-  const allProjects = Array.from({ length: 13 }).map((_, i) => ({
-    id: i + 1,
-    title: '알콩달콩',
-    tag: 'APP',
-    description: '프로젝트 부연설명 한줄 소개',
-    image: projectImage1,
-  }))
+  // 프로젝트 데이터
+  const allProjects = getAllProjects()
 
   // 화면 너비에 따른 열 개수 계산
   const getColumns = () => {
@@ -91,6 +100,25 @@ export default function Projects() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
+  // 특정 프로젝트로 스크롤
+  useEffect(() => {
+    if (projectIdParam) {
+      const projectId = parseInt(projectIdParam, 10)
+      const projectElement = document.getElementById(`project-${projectId}`)
+      if (projectElement) {
+        setTimeout(() => {
+          projectElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          // 하이라이트 효과
+          projectElement.style.borderColor = '#FFFFFF'
+          projectElement.style.transition = 'border-color 0.3s'
+          setTimeout(() => {
+            projectElement.style.borderColor = ''
+          }, 2000)
+        }, 100)
+      }
+    }
+  }, [projectIdParam])
 
   const visibleProjects = allProjects.slice(0, displayedProjects)
 
@@ -261,7 +289,12 @@ export default function Projects() {
           {visibleProjects.map((project) => (
             <div
               key={project.id}
-              className="border border-white/50 rounded-3xl bg-[#1A1A1A] overflow-hidden hover:border-white transition-colors"
+              id={`project-${project.id}`}
+              className="border border-white/50 rounded-3xl bg-[#1A1A1A] overflow-hidden hover:border-white transition-colors cursor-pointer"
+              onClick={() => {
+                setSelectedProject(project)
+                setIsModalOpen(true)
+              }}
             >
               {/* 프로젝트 이미지 컨테이너 - 좌우여백 37.5, 상단 여백 34 */}
               <div
@@ -359,6 +392,16 @@ export default function Projects() {
           />
         </button>
       </main>
+
+      {/* 프로젝트 상세 모달 */}
+      <ProjectDetailModal
+        project={selectedProject}
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false)
+          setSelectedProject(null)
+        }}
+      />
     </div>
   )
 }
