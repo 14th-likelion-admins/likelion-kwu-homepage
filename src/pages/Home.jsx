@@ -11,11 +11,14 @@ import noiseStar from '../assets/noise-star.png'
 import gradiantBg from '../assets/gradiant-bg.png'
 import supportButton from '../assets/support-button.png'
 
+import { loadFonts } from '../utils/fonts'
+
 export default function Home() {
   const [aboutVisible, setAboutVisible] = useState(false)
   const [coreValuesVisible, setCoreValuesVisible] = useState(false)
   const [heroAnimated, setHeroAnimated] = useState(false)
   const [showToast, setShowToast] = useState(false)
+  const [viewToast, setViewToast] = useState(false)
 
   const aboutRef = useRef(null)
   const coreValuesRef = useRef(null)
@@ -27,7 +30,15 @@ export default function Home() {
     }, 3000)
   }
 
+  const handleViewClick = () => {
+    setViewToast(true)
+    setTimeout(() => {
+      setViewToast(false)
+    }, 3000)
+  }
+
   useEffect(() => {
+    loadFonts()
     // Hero 애니메이션 시작
     const timer = setTimeout(() => {
       setHeroAnimated(true)
@@ -69,10 +80,16 @@ export default function Home() {
   }, [])
 
   return (
-    <div className='overflow-x-hidden font-sans text-white' style={{ backgroundColor: '#1A1A1A' }}>
+    <div
+      className='overflow-x-hidden text-white'
+      style={{
+        backgroundColor: '#1A1A1A',
+        fontFamily: 'Space Grotesk',
+      }}
+    >
       <Header />
 
-      {/* Toast 알림 */}
+      {/* 지원 Toast 알림 */}
       {showToast && (
         <div
           className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
@@ -93,6 +110,30 @@ export default function Home() {
             }
           `}</style>
           <p className='text-center'>지금은 모집기간이 아니에요! 모집 기간을 확인해주세요 :)</p>
+        </div>
+      )}
+
+      {/* view Toast 알림 */}
+      {viewToast && (
+        <div
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          style={{
+            animation: 'slideDown 0.3s ease-out',
+          }}
+        >
+          <style>{`
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+              }
+              to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+              }
+            }
+          `}</style>
+          <p className='text-center'>준비 중이에요!</p>
         </div>
       )}
 
@@ -316,7 +357,8 @@ export default function Home() {
             {/* View more 버튼 - 아래에서 등장 */}
             <div className='flex justify-center'>
               <button
-                className={`px-8 py-3 border border-gray-400 rounded-full text-sm hover:bg-gray-800 transition-all duration-1000 ${
+                onClick={handleViewClick}
+                className={`px-8 py-3 border border-gray-400 rounded-full text-sm ${
                   aboutVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: '300ms' }}
