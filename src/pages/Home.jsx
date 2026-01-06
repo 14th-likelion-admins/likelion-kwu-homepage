@@ -1,37 +1,77 @@
 // src/pages/Home.jsx
+import { useEffect, useRef, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Core1 from '../assets/corevalue1.png'
+import Core2 from '../assets/corevalue2.png'
+import Core3 from '../assets/corevalue3.png'
 
 export default function Home() {
+  const [aboutVisible, setAboutVisible] = useState(false)
+  const [coreValuesVisible, setCoreValuesVisible] = useState(false)
+
+  const aboutRef = useRef(null)
+  const coreValuesRef = useRef(null)
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px',
+    }
+
+    const aboutObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setAboutVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    const coreValuesObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setCoreValuesVisible(true)
+        }
+      })
+    }, observerOptions)
+
+    if (aboutRef.current) aboutObserver.observe(aboutRef.current)
+    if (coreValuesRef.current) coreValuesObserver.observe(coreValuesRef.current)
+
+    return () => {
+      if (aboutRef.current) aboutObserver.unobserve(aboutRef.current)
+      if (coreValuesRef.current) coreValuesObserver.unobserve(coreValuesRef.current)
+    }
+  }, [])
+
   return (
-    <div className='bg-black text-white font-sans'>
+    <div className='font-sans text-white bg-black'>
       <Header />
 
-      <main className='min-h-screen pt-20'>
+      <main className='min-h-screen'>
         {/* Hero Section - 중앙 3D 구체 */}
-        <section className='relative h-screen flex items-center justify-center overflow-hidden'>
+        <section className='relative flex items-center justify-center h-screen overflow-hidden'>
           {/* 배경 그라디언트 효과 */}
           <div className='absolute inset-0 bg-gradient-radial from-orange-900/20 via-black to-black' />
 
           {/* 중앙 구체 영역 */}
           <div className='relative z-10 flex items-center justify-center'>
-            {/* 구체 이미지 또는 CSS로 구현 */}
             <div className='relative w-80 h-80 md:w-96 md:h-96'>
               {/* 오렌지 구체 */}
-              <div className='absolute inset-0 rounded-full bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 shadow-2xl shadow-orange-500/50 animate-pulse-slow' />
+              <div className='absolute inset-0 rounded-full shadow-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 shadow-orange-500/50 animate-pulse-slow' />
 
               {/* 주변 텍스트들 */}
-              <div className='absolute -top-20 left-1/2 -translate-x-1/2 text-sm font-light opacity-80'>
+              <div className='absolute text-sm font-light -translate-x-1/2 -top-20 left-1/2 opacity-80'>
                 FRONTEND
               </div>
-              <div className='absolute -bottom-20 left-1/2 -translate-x-1/2 text-sm font-light opacity-80'>
+              <div className='absolute text-sm font-light -translate-x-1/2 -bottom-20 left-1/2 opacity-80'>
                 BACKEND
               </div>
-              <div className='absolute top-1/2 -left-32 -translate-y-1/2 text-sm font-light opacity-80'>
+              <div className='absolute text-sm font-light -translate-y-1/2 top-1/2 -left-32 opacity-80'>
                 <div>LIKE</div>
                 <div>LION</div>
               </div>
-              <div className='absolute top-1/2 -right-32 -translate-y-1/2 text-sm font-light opacity-80'>
+              <div className='absolute text-sm font-light -translate-y-1/2 top-1/2 -right-32 opacity-80'>
                 <div>KWANG</div>
                 <div>WOON</div>
                 <div>UNIV</div>
@@ -40,7 +80,7 @@ export default function Home() {
               {/* 중앙 텍스트 */}
               <div className='absolute inset-0 flex items-center justify-center'>
                 <div className='text-center'>
-                  <div className='text-xs opacity-60 mb-1'>Expanding X</div>
+                  <div className='mb-1 text-xs opacity-60'>Expanding X</div>
                   <div className='text-sm font-medium'>UX/UI DESIGN</div>
                 </div>
               </div>
@@ -49,7 +89,7 @@ export default function Home() {
 
           {/* 우측 하단 더보기 버튼 */}
           <div className='absolute right-8 bottom-8'>
-            <button className='flex items-center gap-2 px-4 py-2 border border-gray-600 rounded-full hover:bg-gray-800 transition'>
+            <button className='flex items-center gap-2 px-4 py-2 transition border border-gray-600 rounded-full hover:bg-gray-800'>
               <span className='text-sm'>더보기</span>
               <span className='text-orange-400'>→</span>
             </button>
@@ -57,121 +97,140 @@ export default function Home() {
         </section>
 
         {/* ABOUT Section */}
-        <section className='relative py-32 px-4' id='about'>
-          <div className='max-w-7xl mx-auto'>
-            {/* 배경 텍스트 */}
-            <div className='absolute inset-0 flex items-start justify-center pt-20'>
-              <h2 className='text-7xl md:text-9xl font-bold text-white/5 select-none'>ABOUT</h2>
+        <section
+          ref={aboutRef}
+          className='relative px-4 py-20 bg-gradient-to-b from-black via-gray-900 to-gray-900'
+          id='about'
+        >
+          <div className='max-w-6xl mx-auto'>
+            {/* ABOUT 큰 타이틀 - 왼쪽에서 등장, 왼쪽 치우침 */}
+            <div className='pl-8 mb-16 overflow-hidden text-left md:pl-16'>
+              <h2
+                className={`text-6xl md:text-8xl lg:text-9xl font-bold text-white transition-all duration-1000 ${
+                  aboutVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+                }`}
+              >
+                ABOUT
+              </h2>
             </div>
 
-            {/* 내용 */}
-            <div className='relative z-10 text-center space-y-16'>
-              {/* 통계 */}
-              <div className='flex justify-center gap-16 flex-wrap'>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>13</div>
-                  <div className='text-sm text-gray-400 mt-2'>YEARS</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>11,947</div>
-                  <div className='text-sm text-gray-400 mt-2'>광운대학생회 회원 수</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>1,634</div>
-                  <div className='text-sm text-gray-400 mt-2'>전체 프로젝트 건 수</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>97</div>
-                  <div className='text-sm text-gray-400 mt-2'>기술 선호도</div>
-                </div>
+            {/* 통계 - 가운데 고정 */}
+            <div className='flex flex-wrap justify-center gap-16 mb-20 md:gap-24'>
+              <div className='text-center'>
+                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>13</div>
+                <div className='text-sm text-gray-300'>시작한지</div>
               </div>
+              <div className='text-center'>
+                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>11,947</div>
+                <div className='text-sm text-gray-300'>멋사 대학 출신 학생 수</div>
+              </div>
+              <div className='text-center'>
+                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>1,634</div>
+                <div className='text-sm text-gray-300'>해커톤 최다 참여 인원</div>
+              </div>
+              <div className='text-center'>
+                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>97</div>
+                <div className='text-sm text-gray-300'>누적 참여 대학</div>
+              </div>
+            </div>
 
-              {/* LIKELION 타이틀 */}
-              <div>
-                <h3 className='text-6xl md:text-8xl font-bold tracking-wider'>LIKELION</h3>
-              </div>
+            {/* LIKELION 타이틀 - 오른쪽에서 등장, 오른쪽 치우침 */}
+            <div className='pr-8 mb-12 overflow-hidden text-right md:pr-16'>
+              <h3
+                className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-wider transition-all duration-1000 ${
+                  aboutVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+                }`}
+              >
+                LIKELION
+              </h3>
+            </div>
 
-              {/* View more 버튼 */}
-              <div>
-                <button className='px-6 py-3 border border-gray-600 rounded-full hover:bg-gray-800 transition'>
-                  View more →
-                </button>
-              </div>
+            {/* View more 버튼 - 아래에서 등장 */}
+            <div className='flex justify-center'>
+              <button
+                className={`px-8 py-3 border border-gray-400 rounded-full text-sm hover:bg-gray-800 transition-all duration-1000 ${
+                  aboutVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '300ms' }}
+              >
+                View more
+              </button>
             </div>
           </div>
         </section>
 
         {/* CORE VALUES Section */}
-        <section className='relative py-32 px-4 bg-gradient-to-b from-black via-orange-950/10 to-black'>
-          <div className='max-w-7xl mx-auto'>
-            <div className='text-center mb-16'>
-              <h3 className='text-3xl font-bold mb-2'>CORE VALUES</h3>
+        <section
+          ref={coreValuesRef}
+          className='relative px-4 py-20 bg-gradient-to-b from-gray-900 via-orange-950/30 to-black'
+        >
+          <div className='mx-auto max-w-7xl'>
+            {/* 타이틀 */}
+            <div className='mb-16 text-center'>
+              <h3 className='mb-2 text-3xl font-bold text-orange-400 md:text-4xl'>CORE VALUES</h3>
             </div>
 
-            <div className='grid md:grid-cols-3 gap-8'>
-              {/* Responsibility */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 삼각형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div
-                      className='absolute inset-0 border-4 border-orange-400'
-                      style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
-                    ></div>
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Responsibility</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  우리가 맡은 일에 대한 책임을 다하고 약속을 지키며 신뢰를 구축합니다
-                </p>
+            <div className='grid gap-8 md:grid-cols-3'>
+              {/* Responsibility 이미지 */}
+              <div
+                className={`transition-all duration-700 ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '0ms' }}
+              >
+                <img src={Core1} alt='Responsibility' className='w-full h-auto' />
               </div>
 
-              {/* Curiosity */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 원형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div className='absolute inset-0 border-4 border-orange-400 rounded-full' />
-                    <div className='absolute inset-2 border-4 border-orange-400 rounded-full' />
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Curiosity</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  끊임없이 궁금증을 가지고 새로운 것을 배우며 탐구하는 자세를 가집니다
-                </p>
+              {/* Curiosity 이미지 */}
+              <div
+                className={`transition-all duration-700 ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '200ms' }}
+              >
+                <img src={Core2} alt='Curiosity' className='w-full h-auto' />
               </div>
 
-              {/* Cooperation */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 사각형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div className='absolute inset-0 border-4 border-orange-400' />
-                    <div className='absolute inset-2 border-4 border-orange-400' />
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Cooperation</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  서로가 가진 생각을 활발하게 공유하며 함께 더 나은 결과를 만들어 갑니다
-                </p>
+              {/* Cooperation 이미지 */}
+              <div
+                className={`transition-all duration-700 ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '400ms' }}
+              >
+                <img src={Core3} alt='Cooperation' className='w-full h-auto' />
               </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section - Be the LION */}
-        <section className='relative py-32 px-4'>
-          <div className='max-w-4xl mx-auto text-center space-y-8'>
-            <div className='space-y-4'>
-              <h2 className='text-5xl md:text-7xl font-bold'>Be the LION,</h2>
-              <h2 className='text-5xl md:text-7xl font-bold'>Rule Your World!</h2>
+        <section className='relative px-4 py-32 bg-black'>
+          <div className='max-w-4xl mx-auto'>
+            {/* 좌측 상단 꺾쇠 */}
+            <div className='mb-8 text-left'>
+              <div className='text-6xl font-bold text-orange-400 md:text-8xl'>⌜</div>
             </div>
 
-            <p className='text-gray-400 text-lg'>+ 멋사랑 이름까지</p>
+            {/* 중앙 텍스트 */}
+            <div className='mb-8 space-y-6 text-center'>
+              <h2 className='text-4xl font-bold leading-tight md:text-6xl'>
+                Be the LION,
+                <br />
+                Rule Your World!
+              </h2>
+              <p className='text-base text-gray-400'>+ 멋사랑 이름까지</p>
+            </div>
 
-            <div className='pt-8'>
-              <button className='px-8 py-4 bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition text-lg'>
-                대표자화 →
+            {/* 우측 하단 꺾쇠 */}
+            <div className='mb-8 text-right'>
+              <div className='text-6xl font-bold text-orange-400 md:text-8xl'>⌟</div>
+            </div>
+
+            {/* 버튼 */}
+            <div className='text-center'>
+              <button className='px-8 py-3 text-sm transition bg-transparent border border-gray-500 rounded hover:bg-gray-800'>
+                대표 홈페이지
               </button>
             </div>
           </div>
