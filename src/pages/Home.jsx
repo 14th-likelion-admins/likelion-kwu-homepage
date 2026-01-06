@@ -1,177 +1,435 @@
 // src/pages/Home.jsx
+import { useEffect, useRef, useState } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Core1 from '../assets/corevalue1.png'
+import Core2 from '../assets/corevalue2.png'
+import Core3 from '../assets/corevalue3.png'
+import mainsun from '../assets/mainsun.png'
+import noiseBg from '../assets/noise-bg.png'
+import noiseStar from '../assets/noise-star.png'
+import gradiantBg from '../assets/gradiant-bg.png'
+import supportButton from '../assets/support-button.png'
 
 export default function Home() {
+  const [aboutVisible, setAboutVisible] = useState(false)
+  const [coreValuesVisible, setCoreValuesVisible] = useState(false)
+  const [heroAnimated, setHeroAnimated] = useState(false)
+  const [showToast, setShowToast] = useState(false)
+
+  const aboutRef = useRef(null)
+  const coreValuesRef = useRef(null)
+
+  const handleApplyClick = () => {
+    setShowToast(true)
+    setTimeout(() => {
+      setShowToast(false)
+    }, 3000)
+  }
+
+  useEffect(() => {
+    // Hero 애니메이션 시작
+    const timer = setTimeout(() => {
+      setHeroAnimated(true)
+    }, 100)
+
+    const observerOptions = {
+      threshold: 0.3,
+      rootMargin: '0px',
+    }
+
+    const aboutObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setAboutVisible(true)
+        } else {
+          setAboutVisible(false)
+        }
+      })
+    }, observerOptions)
+
+    const coreValuesObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setCoreValuesVisible(true)
+        } else {
+          setCoreValuesVisible(false)
+        }
+      })
+    }, observerOptions)
+
+    if (aboutRef.current) aboutObserver.observe(aboutRef.current)
+    if (coreValuesRef.current) coreValuesObserver.observe(coreValuesRef.current)
+
+    return () => {
+      clearTimeout(timer)
+      if (aboutRef.current) aboutObserver.unobserve(aboutRef.current)
+      if (coreValuesRef.current) coreValuesObserver.unobserve(coreValuesRef.current)
+    }
+  }, [])
+
   return (
-    <div className='bg-black text-white font-sans'>
+    <div className='overflow-x-hidden font-sans text-white' style={{ backgroundColor: '#1A1A1A' }}>
       <Header />
 
-      <main className='min-h-screen pt-20'>
+      {/* Toast 알림 */}
+      {showToast && (
+        <div
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          style={{
+            animation: 'slideDown 0.3s ease-out',
+          }}
+        >
+          <style>{`
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+              }
+              to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+              }
+            }
+          `}</style>
+          <p className='text-center'>지금은 모집기간이 아니에요! 모집 기간을 확인해주세요 :)</p>
+        </div>
+      )}
+
+      <main className='relative min-h-screen'>
+        {/* Noise 배경 - 모든 섹션에 적용 */}
+        <div
+          className='absolute inset-0 pointer-events-none z-[5]'
+          style={{
+            backgroundImage: `url(${noiseBg})`,
+            backgroundRepeat: 'repeat',
+            opacity: 0.5,
+          }}
+        ></div>
+
         {/* Hero Section - 중앙 3D 구체 */}
-        <section className='relative h-screen flex items-center justify-center overflow-hidden'>
-          {/* 배경 그라디언트 효과 */}
-          <div className='absolute inset-0 bg-gradient-radial from-orange-900/20 via-black to-black' />
+        <section className='relative flex items-center justify-center h-screen overflow-hidden'>
+          {/* 배경 */}
+          <div className='absolute inset-0' style={{ backgroundColor: '#1A1A1A' }}></div>
 
-          {/* 중앙 구체 영역 */}
-          <div className='relative z-10 flex items-center justify-center'>
-            {/* 구체 이미지 또는 CSS로 구현 */}
-            <div className='relative w-80 h-80 md:w-96 md:h-96'>
-              {/* 오렌지 구체 */}
-              <div className='absolute inset-0 rounded-full bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 shadow-2xl shadow-orange-500/50 animate-pulse-slow' />
+          {/* Noise Star 배경 - Hero 섹션 전용 */}
+          <div
+            className='absolute inset-0 pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${noiseStar})`,
+              backgroundRepeat: 'repeat',
+              opacity: 0.6,
+            }}
+          ></div>
 
-              {/* 주변 텍스트들 */}
-              <div className='absolute -top-20 left-1/2 -translate-x-1/2 text-sm font-light opacity-80'>
-                FRONTEND
-              </div>
-              <div className='absolute -bottom-20 left-1/2 -translate-x-1/2 text-sm font-light opacity-80'>
-                BACKEND
-              </div>
-              <div className='absolute top-1/2 -left-32 -translate-y-1/2 text-sm font-light opacity-80'>
-                <div>LIKE</div>
-                <div>LION</div>
-              </div>
-              <div className='absolute top-1/2 -right-32 -translate-y-1/2 text-sm font-light opacity-80'>
-                <div>KWANG</div>
-                <div>WOON</div>
-                <div>UNIV</div>
+          {/* 중앙 구체와 모든 텍스트 */}
+          <div className='relative z-10 flex items-center justify-center w-full'>
+            {/* 전체 컨테이너 */}
+            <div
+              className='relative flex items-center justify-center'
+              style={{ width: '1000px', height: '600px' }}
+            >
+              {/* 중앙 구체 이미지 */}
+              <div
+                className='absolute'
+                style={{
+                  width: '552.5px',
+                  height: '552.5px',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <img src={mainsun} alt='Main Sun' className='object-cover w-full h-full' />
               </div>
 
-              {/* 중앙 텍스트 */}
-              <div className='absolute inset-0 flex items-center justify-center'>
-                <div className='text-center'>
-                  <div className='text-xs opacity-60 mb-1'>Expanding X</div>
-                  <div className='text-sm font-medium'>UX/UI DESIGN</div>
+              {/* FRONTEND - 버튼 */}
+              <button
+                className='absolute hover:text-orange-300'
+                style={{
+                  top: '100px',
+                  left: heroAnimated ? '38%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
+                  FRONTEND
                 </div>
+              </button>
+
+              {/* BACKEND - 버튼 */}
+              <button
+                className='absolute hover:text-orange-300'
+                style={{
+                  top: '180px',
+                  left: heroAnimated ? '30%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
+                  BACKEND
+                </div>
+              </button>
+
+              {/* LIKE LION - 텍스트 */}
+              <div
+                className='absolute text-left transition-all'
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? '80px' : '50%',
+                  transform: heroAnimated ? 'translateY(-50%)' : 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transitionDuration: '1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div className='text-4xl font-light leading-tight tracking-wide'>LIKE</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>LION</div>
               </div>
+
+              {/* Exploding X - 텍스트 */}
+              <div
+                className='absolute text-center transition-all'
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? '68%' : '50%',
+                  transform: 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transitionDuration: '1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div className='text-4xl font-light tracking-wider text-white'>Exploding X</div>
+              </div>
+
+              {/* KWAG WOON UNIV - 텍스트 */}
+              <div
+                className='absolute text-right'
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? 'auto' : '50%',
+                  right: heroAnimated ? '80px' : 'auto',
+                  transform: heroAnimated ? 'translateY(-50%)' : 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, right 1.5s, transform 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div className='text-4xl font-light leading-tight tracking-wide'>KWAG</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>WOON</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>UNIV</div>
+              </div>
+
+              {/* UXUI DESIGN - 버튼 */}
+              <button
+                className='absolute hover:text-orange-300'
+                style={{
+                  bottom: '250px',
+                  left: heroAnimated ? '38%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
+              >
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
+                  UXUI DESIGN
+                </div>
+              </button>
             </div>
           </div>
 
-          {/* 우측 하단 더보기 버튼 */}
-          <div className='absolute right-8 bottom-8'>
-            <button className='flex items-center gap-2 px-4 py-2 border border-gray-600 rounded-full hover:bg-gray-800 transition'>
-              <span className='text-sm'>더보기</span>
-              <span className='text-orange-400'>→</span>
+          {/* 우측 하단 버튼 영역 */}
+          <div className='absolute flex items-center gap-4 right-12 bottom-12'>
+            {/* 지원 하기 버튼 - 이미지 */}
+            <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+              <img src={supportButton} alt='지원 하기' className='w-auto h-12' />
             </button>
           </div>
         </section>
 
         {/* ABOUT Section */}
-        <section className='relative py-32 px-4' id='about'>
-          <div className='max-w-7xl mx-auto'>
-            {/* 배경 텍스트 */}
-            <div className='absolute inset-0 flex items-start justify-center pt-20'>
-              <h2 className='text-7xl md:text-9xl font-bold text-white/5 select-none'>ABOUT</h2>
+        <section
+          ref={aboutRef}
+          className='relative px-4 py-20'
+          style={{ backgroundColor: '#1A1A1A' }}
+          id='about'
+        >
+          <div className='max-w-6xl mx-auto'>
+            {/* ABOUT 큰 타이틀 - 왼쪽에서 등장, 왼쪽 치우침 */}
+            <div className='pl-8 mb-16 overflow-hidden text-left md:pl-16'>
+              <h2
+                className={`text-6xl md:text-8xl lg:text-9xl font-bold text-white transition-all duration-1000 ${
+                  aboutVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
+                }`}
+              >
+                ABOUT
+              </h2>
             </div>
 
-            {/* 내용 */}
-            <div className='relative z-10 text-center space-y-16'>
-              {/* 통계 */}
-              <div className='flex justify-center gap-16 flex-wrap'>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>13</div>
-                  <div className='text-sm text-gray-400 mt-2'>YEARS</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>11,947</div>
-                  <div className='text-sm text-gray-400 mt-2'>광운대학생회 회원 수</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>1,634</div>
-                  <div className='text-sm text-gray-400 mt-2'>전체 프로젝트 건 수</div>
-                </div>
-                <div>
-                  <div className='text-5xl font-bold text-orange-400'>97</div>
-                  <div className='text-sm text-gray-400 mt-2'>기술 선호도</div>
-                </div>
+            {/* 통계 - 가운데 고정 */}
+            <div className='flex flex-wrap justify-center gap-16 mb-20 md:gap-24'>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl '>13</div>
+                <div className='text-sm text-gray-300'>시작한지</div>
               </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>11,947</div>
+                <div className='text-sm text-gray-300'>멋사 대학 출신 학생 수</div>
+              </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>1,634</div>
+                <div className='text-sm text-gray-300'>해커톤 최다 참여 인원</div>
+              </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>97</div>
+                <div className='text-sm text-gray-300'>누적 참여 대학</div>
+              </div>
+            </div>
 
-              {/* LIKELION 타이틀 */}
-              <div>
-                <h3 className='text-6xl md:text-8xl font-bold tracking-wider'>LIKELION</h3>
-              </div>
+            {/* LIKELION 타이틀 - 오른쪽에서 등장, 오른쪽 치우침 */}
+            <div className='pr-8 mb-12 overflow-hidden text-right md:pr-16'>
+              <h3
+                className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-wider transition-all duration-1000 ${
+                  aboutVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+                }`}
+              >
+                LIKELION
+              </h3>
+            </div>
 
-              {/* View more 버튼 */}
-              <div>
-                <button className='px-6 py-3 border border-gray-600 rounded-full hover:bg-gray-800 transition'>
-                  View more →
-                </button>
-              </div>
+            {/* View more 버튼 - 아래에서 등장 */}
+            <div className='flex justify-center'>
+              <button
+                className={`px-8 py-3 border border-gray-400 rounded-full text-sm hover:bg-gray-800 transition-all duration-1000 ${
+                  aboutVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '300ms' }}
+              >
+                View more
+              </button>
             </div>
           </div>
         </section>
 
         {/* CORE VALUES Section */}
-        <section className='relative py-32 px-4 bg-gradient-to-b from-black via-orange-950/10 to-black'>
-          <div className='max-w-7xl mx-auto'>
-            <div className='text-center mb-16'>
-              <h3 className='text-3xl font-bold mb-2'>CORE VALUES</h3>
+        <section
+          ref={coreValuesRef}
+          className='relative px-4 py-32 overflow-visible'
+          style={{ backgroundColor: '#1A1A1A' }}
+        >
+          {/* Gradiant 배경 이미지 */}
+          <div
+            className='absolute pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${gradiantBg})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: '60%',
+              opacity: 0.6,
+              top: '-20%',
+              left: '-10%',
+              right: '-10%',
+              bottom: '-20%',
+            }}
+          ></div>
+
+          <div className='relative z-10 max-w-5xl mx-auto'>
+            {/* 타이틀 */}
+            <div className='mb-20 text-center'>
+              <h3 className='mb-2 text-2xl font-normal tracking-wider text-white md:text-3xl'>
+                CORE VALUES
+              </h3>
             </div>
 
-            <div className='grid md:grid-cols-3 gap-8'>
-              {/* Responsibility */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 삼각형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div
-                      className='absolute inset-0 border-4 border-orange-400'
-                      style={{ clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)' }}
-                    ></div>
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Responsibility</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  우리가 맡은 일에 대한 책임을 다하고 약속을 지키며 신뢰를 구축합니다
-                </p>
+            <div className='grid gap-12 md:grid-cols-3 md:gap-16'>
+              {/* Responsibility 이미지 */}
+              <div
+                className={`transition-all duration-700 flex flex-col items-center ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '0ms' }}
+              >
+                <img src={Core1} alt='Responsibility' className='w-48 h-auto mb-6 md:w-56' />
               </div>
 
-              {/* Curiosity */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 원형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div className='absolute inset-0 border-4 border-orange-400 rounded-full' />
-                    <div className='absolute inset-2 border-4 border-orange-400 rounded-full' />
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Curiosity</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  끊임없이 궁금증을 가지고 새로운 것을 배우며 탐구하는 자세를 가집니다
-                </p>
+              {/* Curiosity 이미지 */}
+              <div
+                className={`transition-all duration-700 flex flex-col items-center ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '200ms' }}
+              >
+                <img src={Core2} alt='Curiosity' className='w-48 h-auto mb-6 md:w-56' />
               </div>
 
-              {/* Cooperation */}
-              <div className='bg-gray-900/50 backdrop-blur rounded-2xl p-8 border border-gray-800 hover:border-orange-500/50 transition'>
-                <div className='w-20 h-20 mx-auto mb-6 flex items-center justify-center'>
-                  {/* 아이콘 영역 - 사각형 패턴 */}
-                  <div className='relative w-16 h-16'>
-                    <div className='absolute inset-0 border-4 border-orange-400' />
-                    <div className='absolute inset-2 border-4 border-orange-400' />
-                  </div>
-                </div>
-                <h4 className='text-xl font-bold text-center mb-4'>Cooperation</h4>
-                <p className='text-sm text-gray-400 text-center leading-relaxed'>
-                  서로가 가진 생각을 활발하게 공유하며 함께 더 나은 결과를 만들어 갑니다
-                </p>
+              {/* Cooperation 이미지 */}
+              <div
+                className={`transition-all duration-700 flex flex-col items-center ${
+                  coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
+                }`}
+                style={{ transitionDelay: '400ms' }}
+              >
+                <img src={Core3} alt='Cooperation' className='w-48 h-auto mb-6 md:w-56' />
               </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section - Be the LION */}
-        <section className='relative py-32 px-4'>
-          <div className='max-w-4xl mx-auto text-center space-y-8'>
-            <div className='space-y-4'>
-              <h2 className='text-5xl md:text-7xl font-bold'>Be the LION,</h2>
-              <h2 className='text-5xl md:text-7xl font-bold'>Rule Your World!</h2>
+        <section className='relative px-4 py-32' style={{ backgroundColor: '#1A1A1A' }}>
+          {/* Noise Star 배경 - CTA 섹션 전용 */}
+          <div
+            className='absolute inset-0 pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${noiseStar})`,
+              backgroundRepeat: 'repeat',
+              opacity: 0.6,
+            }}
+          ></div>
+
+          <div className='max-w-5xl mx-auto relative z-10 min-h-[400px] flex flex-col'>
+            {/* 좌측 상단 꺾쇠 */}
+            <div className='absolute top-0 left-0'>
+              <div className='text-6xl font-bold text-white md:text-7xl'>⌜</div>
             </div>
 
-            <p className='text-gray-400 text-lg'>+ 멋사랑 이름까지</p>
+            {/* 중앙 텍스트 */}
+            <div className='flex items-center flex-1'>
+              <div className='pt-8 pl-8 space-y-6 text-left'>
+                <h2 className='text-5xl font-bold leading-tight md:text-7xl'>
+                  Be the LION,
+                  <br />
+                  Rule Your World!
+                </h2>
+                <p className='text-lg font-bold'>: 멋사랑 어흥해</p>
+              </div>
+            </div>
 
-            <div className='pt-8'>
-              <button className='px-8 py-4 bg-transparent border border-gray-600 rounded-full hover:bg-gray-800 transition text-lg'>
-                대표자화 →
+            {/* 우측 하단 꺾쇠 */}
+            <div className='absolute right-0 bottom-20'>
+              <div className='text-6xl font-bold text-white md:text-7xl'>⌟</div>
+            </div>
+
+            {/* 버튼 */}
+            <div className='pb-8 text-center'>
+              <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+                <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
               </button>
             </div>
           </div>
