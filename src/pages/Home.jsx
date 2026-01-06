@@ -8,15 +8,31 @@ import Core3 from '../assets/corevalue3.png'
 import mainsun from '../assets/mainsun.png'
 import noiseBg from '../assets/noise-bg.png'
 import noiseStar from '../assets/noise-star.png'
+import gradiantBg from '../assets/gradiant-bg.png'
+import supportButton from '../assets/support-button.png'
 
 export default function Home() {
   const [aboutVisible, setAboutVisible] = useState(false)
   const [coreValuesVisible, setCoreValuesVisible] = useState(false)
+  const [heroAnimated, setHeroAnimated] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   const aboutRef = useRef(null)
   const coreValuesRef = useRef(null)
 
+  const handleApplyClick = () => {
+    setShowToast(true)
+    setTimeout(() => {
+      setShowToast(false)
+    }, 3000)
+  }
+
   useEffect(() => {
+    // Hero 애니메이션 시작
+    const timer = setTimeout(() => {
+      setHeroAnimated(true)
+    }, 100)
+
     const observerOptions = {
       threshold: 0.3,
       rootMargin: '0px',
@@ -46,14 +62,39 @@ export default function Home() {
     if (coreValuesRef.current) coreValuesObserver.observe(coreValuesRef.current)
 
     return () => {
+      clearTimeout(timer)
       if (aboutRef.current) aboutObserver.unobserve(aboutRef.current)
       if (coreValuesRef.current) coreValuesObserver.unobserve(coreValuesRef.current)
     }
   }, [])
 
   return (
-    <div className='font-sans text-white' style={{ backgroundColor: '#1A1A1A' }}>
+    <div className='overflow-x-hidden font-sans text-white' style={{ backgroundColor: '#1A1A1A' }}>
       <Header />
+
+      {/* Toast 알림 */}
+      {showToast && (
+        <div
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          style={{
+            animation: 'slideDown 0.3s ease-out',
+          }}
+        >
+          <style>{`
+            @keyframes slideDown {
+              from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+              }
+              to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+              }
+            }
+          `}</style>
+          <p className='text-center'>지금은 모집기간이 아니에요! 모집 기간을 확인해주세요 :)</p>
+        </div>
+      )}
 
       <main className='relative min-h-screen'>
         {/* Noise 배경 - 모든 섹션에 적용 */}
@@ -104,28 +145,55 @@ export default function Home() {
 
               {/* FRONTEND - 버튼 */}
               <button
-                className='absolute transition-all hover:text-orange-300'
-                style={{ top: '100px', left: '32%' }}
+                className='absolute hover:text-orange-300'
+                style={{
+                  top: '100px',
+                  left: heroAnimated ? '38%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
               >
-                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
                   FRONTEND
                 </div>
               </button>
 
               {/* BACKEND - 버튼 */}
               <button
-                className='absolute transition-all hover:text-orange-300'
-                style={{ top: '180px', left: '25%' }}
+                className='absolute hover:text-orange-300'
+                style={{
+                  top: '180px',
+                  left: heroAnimated ? '30%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
               >
-                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
                   BACKEND
                 </div>
               </button>
 
               {/* LIKE LION - 텍스트 */}
               <div
-                className='absolute text-left'
-                style={{ top: '40%', left: '80px', transform: 'translateY(-50%)' }}
+                className='absolute text-left transition-all'
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? '80px' : '50%',
+                  transform: heroAnimated ? 'translateY(-50%)' : 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transitionDuration: '1.5s',
+                  transitionDelay: '0s',
+                }}
               >
                 <div className='text-4xl font-light leading-tight tracking-wide'>LIKE</div>
                 <div className='text-4xl font-light leading-tight tracking-wide'>LION</div>
@@ -133,8 +201,15 @@ export default function Home() {
 
               {/* Exploding X - 텍스트 */}
               <div
-                className='absolute text-center'
-                style={{ top: '40%', left: '68%', transform: 'translate(-50%, -50%)' }}
+                className='absolute text-center transition-all'
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? '68%' : '50%',
+                  transform: 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transitionDuration: '1.5s',
+                  transitionDelay: '0s',
+                }}
               >
                 <div className='text-4xl font-light tracking-wider text-white'>Exploding X</div>
               </div>
@@ -142,7 +217,15 @@ export default function Home() {
               {/* KWAG WOON UNIV - 텍스트 */}
               <div
                 className='absolute text-right'
-                style={{ top: '40%', right: '80px', transform: 'translateY(-50%)' }}
+                style={{
+                  top: '40%',
+                  left: heroAnimated ? 'auto' : '50%',
+                  right: heroAnimated ? '80px' : 'auto',
+                  transform: heroAnimated ? 'translateY(-50%)' : 'translate(-50%, -50%)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, right 1.5s, transform 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
               >
                 <div className='text-4xl font-light leading-tight tracking-wide'>KWAG</div>
                 <div className='text-4xl font-light leading-tight tracking-wide'>WOON</div>
@@ -151,10 +234,20 @@ export default function Home() {
 
               {/* UXUI DESIGN - 버튼 */}
               <button
-                className='absolute transition-all hover:text-orange-300'
-                style={{ bottom: '250px', left: '32%' }}
+                className='absolute hover:text-orange-300'
+                style={{
+                  bottom: '250px',
+                  left: heroAnimated ? '38%' : '50%',
+                  transform: 'translate(-50%, 0)',
+                  opacity: heroAnimated ? 1 : 0,
+                  transition: 'left 1.5s, opacity 1.5s',
+                  transitionDelay: '0s',
+                }}
               >
-                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                <div
+                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
+                >
                   UXUI DESIGN
                 </div>
               </button>
@@ -163,12 +256,9 @@ export default function Home() {
 
           {/* 우측 하단 버튼 영역 */}
           <div className='absolute flex items-center gap-4 right-12 bottom-12'>
-            {/* 지원 하기 버튼 */}
-            <button className='flex items-center gap-3 px-6 py-3 text-base transition border-2 border-white rounded-sm hover:bg-white/10 group'>
-              <span>지원 하기</span>
-              <span className='text-xl transition-transform transform group-hover:translate-x-1 group-hover:-translate-y-1'>
-                ↗
-              </span>
+            {/* 지원 하기 버튼 - 이미지 */}
+            <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+              <img src={supportButton} alt='지원 하기' className='w-auto h-12' />
             </button>
           </div>
         </section>
@@ -240,13 +330,29 @@ export default function Home() {
         {/* CORE VALUES Section */}
         <section
           ref={coreValuesRef}
-          className='relative px-4 py-32'
+          className='relative px-4 py-32 overflow-visible'
           style={{ backgroundColor: '#1A1A1A' }}
         >
-          <div className='max-w-5xl mx-auto'>
+          {/* Gradiant 배경 이미지 */}
+          <div
+            className='absolute pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${gradiantBg})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
+              backgroundSize: '60%',
+              opacity: 0.6,
+              top: '-20%',
+              left: '-10%',
+              right: '-10%',
+              bottom: '-20%',
+            }}
+          ></div>
+
+          <div className='relative z-10 max-w-5xl mx-auto'>
             {/* 타이틀 */}
             <div className='mb-20 text-center'>
-              <h3 className='mb-2 text-2xl font-bold tracking-wider text-orange-300 md:text-3xl'>
+              <h3 className='mb-2 text-2xl font-normal tracking-wider text-white md:text-3xl'>
                 CORE VALUES
               </h3>
             </div>
@@ -322,8 +428,8 @@ export default function Home() {
 
             {/* 버튼 */}
             <div className='pb-8 text-center'>
-              <button className='px-8 py-3 text-sm transition bg-transparent border border-gray-400 rounded hover:bg-gray-700'>
-                지원 하기 →
+              <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+                <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
               </button>
             </div>
           </div>
