@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import Core1 from '../assets/corevalue1.png'
 import Core2 from '../assets/corevalue2.png'
 import Core3 from '../assets/corevalue3.png'
+import mainsun from '../assets/mainsun.png'
 
 export default function Home() {
   const [aboutVisible, setAboutVisible] = useState(false)
@@ -23,6 +24,8 @@ export default function Home() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setAboutVisible(true)
+        } else {
+          setAboutVisible(false)
         }
       })
     }, observerOptions)
@@ -31,6 +34,8 @@ export default function Home() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setCoreValuesVisible(true)
+        } else {
+          setCoreValuesVisible(false)
         }
       })
     }, observerOptions)
@@ -51,47 +56,91 @@ export default function Home() {
       <main className='min-h-screen'>
         {/* Hero Section - 중앙 3D 구체 */}
         <section className='relative flex items-center justify-center h-screen overflow-hidden'>
-          {/* 배경 그라디언트 효과 */}
-          <div className='absolute inset-0 bg-gradient-radial from-orange-900/20 via-black to-black' />
+          {/* 배경 - 검은색 */}
+          <div className='absolute inset-0 bg-black'></div>
 
-          {/* 중앙 구체 영역 */}
-          <div className='relative z-10 flex items-center justify-center'>
-            <div className='relative w-80 h-80 md:w-96 md:h-96'>
-              {/* 오렌지 구체 */}
-              <div className='absolute inset-0 rounded-full shadow-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-red-700 shadow-orange-500/50 animate-pulse-slow' />
-
-              {/* 주변 텍스트들 */}
-              <div className='absolute text-sm font-light -translate-x-1/2 -top-20 left-1/2 opacity-80'>
-                FRONTEND
-              </div>
-              <div className='absolute text-sm font-light -translate-x-1/2 -bottom-20 left-1/2 opacity-80'>
-                BACKEND
-              </div>
-              <div className='absolute text-sm font-light -translate-y-1/2 top-1/2 -left-32 opacity-80'>
-                <div>LIKE</div>
-                <div>LION</div>
-              </div>
-              <div className='absolute text-sm font-light -translate-y-1/2 top-1/2 -right-32 opacity-80'>
-                <div>KWANG</div>
-                <div>WOON</div>
-                <div>UNIV</div>
+          {/* 중앙 구체와 모든 텍스트 */}
+          <div className='relative z-10 flex items-center justify-center w-full'>
+            {/* 전체 컨테이너 */}
+            <div
+              className='relative flex items-center justify-center'
+              style={{ width: '1000px', height: '600px' }}
+            >
+              {/* 중앙 구체 이미지 */}
+              <div
+                className='absolute'
+                style={{
+                  width: '552.5px',
+                  height: '552.5px',
+                  left: '50%',
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                }}
+              >
+                <img src={mainsun} alt='Main Sun' className='object-cover w-full h-full' />
               </div>
 
-              {/* 중앙 텍스트 */}
-              <div className='absolute inset-0 flex items-center justify-center'>
-                <div className='text-center'>
-                  <div className='mb-1 text-xs opacity-60'>Expanding X</div>
-                  <div className='text-sm font-medium'>UX/UI DESIGN</div>
-                </div>
+              {/* FRONTEND - 버튼 */}
+              <button
+                className='absolute transition-colors hover:text-orange-400'
+                style={{ top: '100px', left: '32%' }}
+              >
+                <div className='text-3xl font-light tracking-wide'>FRONTEND</div>
+              </button>
+
+              {/* BACKEND - 버튼 */}
+              <button
+                className='absolute transition-colors hover:text-orange-400'
+                style={{ top: '180px', left: '25%' }}
+              >
+                <div className='text-3xl font-light tracking-wide'>BACKEND</div>
+              </button>
+
+              {/* LIKE LION - 텍스트 */}
+              <div
+                className='absolute text-left'
+                style={{ top: '40%', left: '80px', transform: 'translateY(-50%)' }}
+              >
+                <div className='text-4xl font-light leading-tight tracking-wide'>LIKE</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>LION</div>
               </div>
+
+              {/* Exploding X - 텍스트 */}
+              <div
+                className='absolute text-center'
+                style={{ top: '40%', left: '68%', transform: 'translate(-50%, -50%)' }}
+              >
+                <div className='text-4xl font-light tracking-wider text-white'>Exploding X</div>
+              </div>
+
+              {/* KWAG WOON UNIV - 텍스트 */}
+              <div
+                className='absolute text-right'
+                style={{ top: '40%', right: '80px', transform: 'translateY(-50%)' }}
+              >
+                <div className='text-4xl font-light leading-tight tracking-wide'>KWAG</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>WOON</div>
+                <div className='text-4xl font-light leading-tight tracking-wide'>UNIV</div>
+              </div>
+
+              {/* UXUI DESIGN - 버튼 */}
+              <button
+                className='absolute transition-colors hover:text-orange-400'
+                style={{ bottom: '150px', left: '32%' }}
+              >
+                <div className='text-3xl font-light tracking-wide'>UXUI DESIGN</div>
+              </button>
             </div>
           </div>
 
-          {/* 우측 하단 더보기 버튼 */}
-          <div className='absolute right-8 bottom-8'>
-            <button className='flex items-center gap-2 px-4 py-2 transition border border-gray-600 rounded-full hover:bg-gray-800'>
-              <span className='text-sm'>더보기</span>
-              <span className='text-orange-400'>→</span>
+          {/* 우측 하단 버튼 영역 */}
+          <div className='absolute flex items-center gap-4 right-12 bottom-12'>
+            {/* 지원 하기 버튼 */}
+            <button className='flex items-center gap-3 px-6 py-3 text-base transition border-2 border-white rounded-sm hover:bg-white/10 group'>
+              <span>지원 하기</span>
+              <span className='text-xl transition-transform transform group-hover:translate-x-1 group-hover:-translate-y-1'>
+                ↗
+              </span>
             </button>
           </div>
         </section>
@@ -162,43 +211,45 @@ export default function Home() {
         {/* CORE VALUES Section */}
         <section
           ref={coreValuesRef}
-          className='relative px-4 py-20 bg-gradient-to-b from-gray-900 via-orange-950/30 to-black'
+          className='relative px-4 py-32 bg-gradient-to-b from-gray-900 via-orange-950/30 to-black'
         >
-          <div className='mx-auto max-w-7xl'>
+          <div className='max-w-5xl mx-auto'>
             {/* 타이틀 */}
-            <div className='mb-16 text-center'>
-              <h3 className='mb-2 text-3xl font-bold text-orange-400 md:text-4xl'>CORE VALUES</h3>
+            <div className='mb-20 text-center'>
+              <h3 className='mb-2 text-2xl font-bold tracking-wider text-orange-300 md:text-3xl'>
+                CORE VALUES
+              </h3>
             </div>
 
-            <div className='grid gap-8 md:grid-cols-3'>
+            <div className='grid gap-12 md:grid-cols-3 md:gap-16'>
               {/* Responsibility 이미지 */}
               <div
-                className={`transition-all duration-700 ${
+                className={`transition-all duration-700 flex flex-col items-center ${
                   coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: '0ms' }}
               >
-                <img src={Core1} alt='Responsibility' className='w-full h-auto' />
+                <img src={Core1} alt='Responsibility' className='w-48 h-auto mb-6 md:w-56' />
               </div>
 
               {/* Curiosity 이미지 */}
               <div
-                className={`transition-all duration-700 ${
+                className={`transition-all duration-700 flex flex-col items-center ${
                   coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: '200ms' }}
               >
-                <img src={Core2} alt='Curiosity' className='w-full h-auto' />
+                <img src={Core2} alt='Curiosity' className='w-48 h-auto mb-6 md:w-56' />
               </div>
 
               {/* Cooperation 이미지 */}
               <div
-                className={`transition-all duration-700 ${
+                className={`transition-all duration-700 flex flex-col items-center ${
                   coreValuesVisible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: '400ms' }}
               >
-                <img src={Core3} alt='Cooperation' className='w-full h-auto' />
+                <img src={Core3} alt='Cooperation' className='w-48 h-auto mb-6 md:w-56' />
               </div>
             </div>
           </div>
