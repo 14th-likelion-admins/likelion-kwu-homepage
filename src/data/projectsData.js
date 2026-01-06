@@ -18,21 +18,32 @@ import { projectImages, getProjectImage, getThumbnailImageSync } from './project
  * 모든 프로젝트 데이터를 생성하는 함수
  * 
  * 동작 방식:
- * 1. predefinedProjects 배열에 상세 정보가 있는 프로젝트를 먼저 추가
- * 2. projectImages 맵에 있는 모든 프로젝트 id를 가져와서 기본 프로젝트 생성
+ * 1. projectImages 맵에 있는 모든 프로젝트 id를 가져와서 기본 프로젝트 데이터 생성
+ * 2. predefinedProjects 배열에 있는 상세 정보로 기본 데이터를 덮어쓰기 (우선 적용)
  * 3. 프로젝트를 id 내림차순으로 정렬 (숫자가 큰 것 = 최신 프로젝트)
  * 
  * 새로운 프로젝트 추가 시:
- * - 상세 정보가 필요한 경우: predefinedProjects 배열에 프로젝트 객체 추가
- * - 기본 정보만 필요한 경우: projectImages.js에만 추가하면 자동 생성됨
+ * - 기본 정보만 필요한 경우: projectImages.js에 이미지만 추가하면 자동 생성됨
+ * - 상세 정보가 필요한 경우: predefinedProjects 배열에 프로젝트 객체 추가 (기본 데이터를 덮어씀)
  * 
  * @returns {Array} 프로젝트 배열 (id 내림차순 정렬)
  */
 // 프로젝트 데이터 캐시 (성능 최적화 및 일관성 보장)
 let cachedProjects = null
 
+/**
+ * 프로젝트 데이터 캐시를 초기화하는 함수
+ * 
+ * 프로젝트 데이터를 수정한 후 캐시를 초기화하여 새로운 데이터를 반영할 수 있습니다.
+ * 개발 중에는 필요시 이 함수를 호출하여 캐시를 초기화할 수 있습니다.
+ */
+export const clearProjectsCache = () => {
+  cachedProjects = null
+}
+
 export const getAllProjects = () => {
   // 캐시된 프로젝트가 있으면 재사용 (일관성 보장)
+  // 개발 중에는 캐시를 주석 처리하여 항상 최신 데이터를 가져올 수 있습니다.
   if (cachedProjects) {
     return cachedProjects
   }
@@ -41,26 +52,63 @@ export const getAllProjects = () => {
   // 프로젝트를 Map으로 관리하여 중복 방지 및 우선순위 보장
   // ============================================================================
   // Map을 사용하면 같은 ID의 프로젝트가 여러 번 추가되어도 마지막 값만 유지됩니다.
-  // 먼저 정의된 프로젝트(상세 정보가 있는 프로젝트)가 우선 적용됩니다.
+  // 기본 프로젝트 데이터를 먼저 생성하고, 나중에 상세 정보가 있는 프로젝트로 덮어씁니다.
   // ============================================================================
   const projectsMap = new Map()
 
   // ============================================================================
-  // 상세 정보가 있는 프로젝트 목록 (우선 적용)
+  // 1단계: 모든 프로젝트에 대해 기본 데이터 생성
   // ============================================================================
-  // 특별한 상세 정보(개요, 기능 등)가 필요한 프로젝트는 여기에 추가
-  // 이 프로젝트들은 나중에 자동 생성 코드에 의해 덮어씌워지지 않습니다
+  // projectImages 맵에 있는 모든 프로젝트 id를 가져와서 기본 프로젝트 데이터 생성
+  // 새로운 프로젝트 이미지가 추가되면 자동으로 기본 데이터가 생성됩니다.
+  // ============================================================================
+  
+  // 프로젝트 id 목록을 가져와서 내림차순 정렬 (숫자가 큰 것 = 최신 프로젝트)
+  const allProjectIds = Object.keys(projectImages)
+    .map(Number)
+    .sort((a, b) => b - a) // 내림차순 정렬
+  
+  // 각 프로젝트 id에 대해 기본 프로젝트 데이터 생성
+  for (const projectId of allProjectIds) {
+    const image = getProjectImage(projectId)
+    if (image) {
+      // 기본 프로젝트 데이터 생성
+      projectsMap.set(projectId, {
+        id: projectId,
+        title: '타이틀 미지정',
+        tag: 'WEB',
+        description: '프로젝트 한줄 소개',
+        image: image,
+        thumbnail: getThumbnailImageSync(projectId),
+        detail: {
+          thumbnail: image,
+          overview: '프로젝트 개요가 여기에 들어갑니다.',
+          features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
+        },
+      })
+    }
+  }
+
+  // ============================================================================
+  // 2단계: 상세 정보가 있는 프로젝트로 기본 데이터 덮어쓰기
+  // ============================================================================
+  // predefinedProjects 배열에 정의된 프로젝트의 상세 정보로 기본 데이터를 덮어씁니다.
+  // 이렇게 하면 나중에 상세 정보를 추가하거나 수정할 때 쉽게 업데이트할 수 있습니다.
+  // 
+  // 프로젝트는 id 내림차순(16 → 1)으로 정리되어 있어 유지보수가 쉽습니다.
+  // 새로운 프로젝트 상세 정보 추가 시: 해당 id의 프로젝트 객체를 배열에 추가하세요.
   // ============================================================================
   const predefinedProjects = [
+    // 17번 프로젝트: 리본(RE:born)
     {
-      id: 1,
+      id: 17,
       title: '리본(RE:born)',
-      tag: 'APP',
+      tag: 'WEB',
       description: 'AI 유기동물 맞춤 추천 서비스',
-      image: getProjectImage(1),
-      thumbnail: getThumbnailImageSync(1),
+      image: getProjectImage(17),
+      thumbnail: getThumbnailImageSync(17),
       detail: {
-        thumbnail: getProjectImage(1),
+        thumbnail: getProjectImage(17),
         overview: `**RE:born**은 사용자의 관심사와 행동 패턴을 학습하여 개인에게 가장 적합한 유기동물을 추천하는 **AI 기반 매칭 서비스**입니다.
 
 AI 추천과 정보 통합을 통해 유기동물 입양 과정을 보다 쉽고, 신뢰할 수 있게 만드는 것을 목표로 합니다.
@@ -82,101 +130,135 @@ AI 추천과 정보 통합을 통해 유기동물 입양 과정을 보다 쉽고
         ],
       },
     },
+    // 16번 프로젝트: SafeScan
     {
-      id: 2,
+      id: 16,
       title: 'SafeScan',
-      tag: 'APP',
+      tag: 'WEB',
       description: 'AI 디지털 범죄 사전 탐지 플랫폼',
-      image: getProjectImage(2),
-      thumbnail: getThumbnailImageSync(2),
+      image: getProjectImage(16),
+      thumbnail: getThumbnailImageSync(16),
       detail: {
-        thumbnail: getProjectImage(2),
-        overview: '프로젝트 개요가 여기에 들어갑니다.',
-        features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
+        thumbnail: getProjectImage(16),
+        overview: `SafeScan은 공공데이터와 실시간 사용자 제보를 기반으로 보이스피싱, 가짜 채용, 스미싱 등 디지털 접촉 기반 점죄를 사전에 탐지, 공유하여 예방하는 안전 플랫폼입니다.
+
+최근 캄보디아 인신매매, 해외 불법 취업 등의 사건을 비롯하여 전화, URL, 이미지 등의 비정형 데이터 형태로 접근하는 신종 범죄가 급증하고 있으나, 대부분의 대응은 사건 발생 이후 신고, 수사 중심에 머물러 있다는 한계가 존재합니다.
+
+SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활용한 자동 위험도 분석, 사용자 실시간 제보 기반 집단 인지, 상황 설명 중심의 AI 챗봇 지원을 결합하여 사용자가 사건 발생 이전에 위험을 인지하고 대응할 수 있도록 돕는 것을 목표로 합니다.
+
+특히 링크, 게시글, 대화 로그 등 다양한 비정형 데이터를 실시간으로 처리, 가공하는 구조를 통해 개별 경험에 의존하던 범죄 대응 방식을 집단적, 시스템적 대응 방식으로 확장하고자 하였습니다.`,
+        features: [
+          '공공데이터 기반 악성 링크 위험도 분석',
+          '전화번호, URL, 이미지 기반 다중 입력 검증',
+          '사용자 실시간 제보 시스템',
+          '제보 피드 기반 정보 확산 및 공감 구조',
+          'HOT 피드 (이슈 우선 노출)',
+          'AI 챗봇 기반 상황 대응 지원',
+          'AI 챗봇 대화 로그 보호 정책',
+          'REST API 기반 서비스 구조',
+          'JWT 기반 인증, 인가 처리',
+          '외부 API 장애 대응 구조',
+        ],
       },
     },
+    
+    // 15번 프로젝트: 살펴
     {
-      id: 3,
+      id: 15,
       title: '살펴',
-      tag: 'APP',
+      tag: 'WEB',
       description: '주민 참여 안전 지도 서비스',
-      image: getProjectImage(3),
-      thumbnail: getThumbnailImageSync(3),
+      image: getProjectImage(15),
+      thumbnail: getThumbnailImageSync(15),
       detail: {
-        thumbnail: getProjectImage(3),
-        overview: '프로젝트 개요가 여기에 들어갑니다.',
-        features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
+        thumbnail: getProjectImage(15),
+        overview: `저희는 현대인이 느끼는 생활 불안을 탐색하던 중 ‘안전 정보의 단절’이라는 문제에 주목했고, 주민과 공공데이터를 연결한 참여형 안전 지도 서비스 ‘살펴’를 기획하게 되었습니다.
+
+    설문조사 결과, 사람들은 이사, 야간 보행, 1인 가구 안전, 고령층 치매 위험 등 다양한 이유로 치안 정보를 원하지만 CCTV 위치, 범죄 통계, 민원, 사고 정보는 **흩어져 있어 통합 확인이 어렵고**, **뉴스에 나오지 않는 일상 위험 요소는 접하기 어렵다**는 한계가 있었습니다.
+
+    안전 정보가 지도 기반으로 시각화될 때, 사용자는 위험 지역을 회피하도록 동선을 바꾸는 등 실제 행동 변화를 보였습니다. 따라서 저희는 확인에서 끝나지 않고 행동까지 이어지는 안전 시스템을 목표로 설계했습니다.
+
+    ‘살펴’는
+
+    - 공공데이터 : 신고 이후 집계된 공식 통계
+    - 주민 제보 : 위험의 초기 징후와 현장 경험 데이터
+
+    두 데이터의 온도차를 연결해 실시간성을 보완했습니다. 또한 사용자는 관공서 공지보다 이웃 경험을 더 신뢰한다는 점에서, 주민 참여와 신뢰 시스템을 중심 구조로 삼았습니다.
+
+    ‘살펴’는 기술보다 사람의 온도를 중심에 둔 안전 지도입니다. 주민의 작은 제보가 이웃의 안전 행동과 지역 사회 안전망 확장으로 이어지는 것을 기대합니다.`,
+        features: [
+          '제보하기: 목격·사고 경험을 제목 + 위험 등급 + 이미지 + 위치 + 원본 글과 함께 공유',
+          'AI 분석: Upstage LLM으로 위험/주의/안전 분류 + 제보 요약 제공',
+          'RAG 비교: DB 기반으로 유사 사고 5건 동시 조회',
+          '공공 인프라 핀: CCTV / 비상벨 / 교통사고 다발 좌표 지도 시각화',
+          '필터·검색·마이페이지: 원하는 정보만 확인 + 내 제보 관리',
+        ],
       },
     },
+    // 14번 프로젝트: 과잉제로
     {
-      id: 4,
+      id: 14,
       title: '과잉제로',
-      tag: 'APP',
+      tag: 'WEB',
       description: '과잉진료 분석 서비스',
-      image: getProjectImage(4),
-      thumbnail: getThumbnailImageSync(4),
+      image: getProjectImage(14),
+      thumbnail: getThumbnailImageSync(14),
       detail: {
-        thumbnail: getProjectImage(4),
-        overview: '프로젝트 개요가 여기에 들어갑니다.',
-        features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
+        thumbnail: getProjectImage(14),
+        overview: `**과잉제로**는 공공데이터를 기반으로 사용자가 받은 진료와 처방이 의학적으로 정상 범위인지, 과잉진료 가능성이 있는지를 비교·분석해주는 헬스케어 서비스입니다.
+
+    공공데이터를 기반으로 한 객관적인 정보 제공을 통해 사용자가 자신의 의료 기록을 스스로 이해하고 판단할 수 있도록 돕는 것을 목표로 합니다.
+
+    사용자는 자신의 **진료 내역과 처방 내역**을 입력하면, 공공데이터를 활용한 통계 결과와 비교 분석을 통해 진료 수준이 평균 대비 낮음 / 평균 / 높음인지 직관적으로 확인할 수 있습니다.
+
+    또한 Upstage LLM을 활용하여 단순 수치 비교를 넘어 처방받은 **약물과 질병에 대한 설명**을 제공하고, 건강과 관련된 **간단한 질문에 AI가 답변**해주는 기능을 통해 의료 정보 접근성을 높이고자 하였습니다.`,
+        features: [
+          '진료 내역 및 처방 내역 입력',
+          '질병명 입력 시 코드 자동 매칭',
+          '공공데이터 기반 진료·처방 통계 비교 분석',
+          '과잉진료 가능성 수준 시각화 (낮음 / 평균 / 높음)',
+          '질병 코드 자동 매칭 및 질병 정보 제공',
+          '처방받은 약물 정보 안내',
+          'Upstage LLM을 활용한 AI 건강 질의응답 기능',
+          '결과 분석 중 로딩 상태 및 지연 안내 UI 제공',
+        ],
       },
     },
+
+    // 13번 프로젝트: FeedUp
     {
-      id: 5,
+      id: 13,
       title: 'FeedUp',
-      tag: 'APP',
+      tag: 'WEB',
       description: 'SNS 프로모션 플랫폼',
-      image: getProjectImage(5),
-      thumbnail: getThumbnailImageSync(5),
+      image: getProjectImage(13),
+      thumbnail: getThumbnailImageSync(13),
       detail: {
-        thumbnail: getProjectImage(5),
-        overview: '프로젝트 개요가 여기에 들어갑니다.',
-        features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
+        thumbnail: getProjectImage(13),
+        overview: `**FeedUp**은 디지털 홍보에 익숙하지 않은 자영업자와 콘텐츠 생산에 친숙한 대학생을 연결하는 **세대 연결형 SNS 프로모션 플랫폼**입니다.
+    
+    OpenAI 기반 콘텐츠 생성을 활용하여 리뷰 데이터를 실제 **SNS 홍보 콘텐츠**로 확장함으로써 광고 효율과 콘텐츠 품질을 동시에 높이는 것을 목표로 합니다.
+    
+    자영업자는 높은 광고비와 복잡한 마케팅 도구로 인해 효과적인 홍보에 어려움을 겪고 있으며, 대학생은 비교적 간단한 활동을 통해 합리적인 소비 경험을 원하는 니즈가 존재합니다.
+    
+    FeedUp은 **리뷰 기반 프로모션** 구조를 통해 자영업자에게는 **저렴하고 간편한 홍보 수단**을, 대학생에게는 **리뷰 작성을 통한 합리적인 한 끼 경험**을 제공합니다.`,
+        features: [
+          'Host: 가게 정보 및 정산을 위한 계좌 등록',
+          'Host: 요금제 선택 후 프로모션 생성',
+          'Host: 대학생 참여 리뷰 검토 및 신고 처리',
+          'Host: OpenAI 기반 인스타그램 피드 콘텐츠 자동 생성',
+          'Mate: 진행 중인 프로모션 조회 및 참여 신청',
+          'Mate: 프로모션 참여 후 리뷰 작성',
+          'Mate: 리뷰 승인 및 조건 충족 시 10,000원 페이백 지급',
+        ],
       },
     },
+    
   ]
 
-  // 먼저 정의된 프로젝트들을 Map에 추가 (우선 적용)
+  // 상세 정보가 있는 프로젝트로 기본 데이터 덮어쓰기
   for (const project of predefinedProjects) {
     projectsMap.set(project.id, project)
-  }
-
-  // ============================================================================
-  // 나머지 프로젝트 자동 생성
-  // ============================================================================
-  // projectImages 맵에 있는 모든 프로젝트 id를 가져와서 기본 프로젝트 데이터 생성
-  // 이미 Map에 있는 프로젝트(상세 정보가 있는 프로젝트)는 건너뜀
-  // ============================================================================
-  
-  // 프로젝트 id 목록을 가져와서 내림차순 정렬 (숫자가 큰 것 = 최신 프로젝트)
-  const allProjectIds = Object.keys(projectImages)
-    .map(Number)
-    .sort((a, b) => b - a) // 내림차순 정렬
-  
-  // 각 프로젝트 id에 대해 기본 프로젝트 데이터 생성
-  for (const projectId of allProjectIds) {
-    // 이미 Map에 있는 프로젝트(상세 정보가 있는 프로젝트)는 건너뛰기
-    if (projectsMap.has(projectId)) {
-      continue
-    }
-    
-    const image = getProjectImage(projectId)
-    if (image) {
-      // 기본 프로젝트 데이터 생성 (상세 정보가 없는 경우에만)
-      projectsMap.set(projectId, {
-        id: projectId,
-        title: '타이틀 미지정',
-        tag: 'WEB',
-        description: '프로젝트 한줄 소개',
-        image: image,
-        thumbnail: getThumbnailImageSync(projectId),
-        detail: {
-          thumbnail: image,
-          overview: '프로젝트 개요가 여기에 들어갑니다.',
-          features: ['주요 기능 1', '주요 기능 2', '주요 기능 3'],
-        },
-      })
-    }
   }
 
   // ============================================================================
