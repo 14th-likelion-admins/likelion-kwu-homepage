@@ -6,6 +6,8 @@ import Core1 from '../assets/corevalue1.png'
 import Core2 from '../assets/corevalue2.png'
 import Core3 from '../assets/corevalue3.png'
 import mainsun from '../assets/mainsun.png'
+import noiseBg from '../assets/noise-bg.png'
+import noiseStar from '../assets/noise-star.png'
 
 export default function Home() {
   const [aboutVisible, setAboutVisible] = useState(false)
@@ -50,14 +52,34 @@ export default function Home() {
   }, [])
 
   return (
-    <div className='font-sans text-white bg-black'>
+    <div className='font-sans text-white' style={{ backgroundColor: '#1A1A1A' }}>
       <Header />
 
-      <main className='min-h-screen'>
+      <main className='relative min-h-screen'>
+        {/* Noise 배경 - 모든 섹션에 적용 */}
+        <div
+          className='absolute inset-0 pointer-events-none z-[5]'
+          style={{
+            backgroundImage: `url(${noiseBg})`,
+            backgroundRepeat: 'repeat',
+            opacity: 0.5,
+          }}
+        ></div>
+
         {/* Hero Section - 중앙 3D 구체 */}
         <section className='relative flex items-center justify-center h-screen overflow-hidden'>
-          {/* 배경 - 검은색 */}
-          <div className='absolute inset-0 bg-black'></div>
+          {/* 배경 */}
+          <div className='absolute inset-0' style={{ backgroundColor: '#1A1A1A' }}></div>
+
+          {/* Noise Star 배경 - Hero 섹션 전용 */}
+          <div
+            className='absolute inset-0 pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${noiseStar})`,
+              backgroundRepeat: 'repeat',
+              opacity: 0.6,
+            }}
+          ></div>
 
           {/* 중앙 구체와 모든 텍스트 */}
           <div className='relative z-10 flex items-center justify-center w-full'>
@@ -70,8 +92,8 @@ export default function Home() {
               <div
                 className='absolute'
                 style={{
-                  width: '600px',
-                  height: '600px',
+                  width: '552.5px',
+                  height: '552.5px',
                   left: '50%',
                   top: '50%',
                   transform: 'translate(-50%, -50%)',
@@ -130,7 +152,7 @@ export default function Home() {
               {/* UXUI DESIGN - 버튼 */}
               <button
                 className='absolute transition-all hover:text-orange-300'
-                style={{ bottom: '150px', left: '32%' }}
+                style={{ bottom: '250px', left: '32%' }}
               >
                 <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
                   UXUI DESIGN
@@ -154,7 +176,8 @@ export default function Home() {
         {/* ABOUT Section */}
         <section
           ref={aboutRef}
-          className='relative px-4 py-20 bg-gradient-to-b from-black via-gray-900 to-gray-900'
+          className='relative px-4 py-20'
+          style={{ backgroundColor: '#1A1A1A' }}
           id='about'
         >
           <div className='max-w-6xl mx-auto'>
@@ -171,37 +194,21 @@ export default function Home() {
 
             {/* 통계 - 가운데 고정 */}
             <div className='flex flex-wrap justify-center gap-16 mb-20 md:gap-24'>
-              <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
-                  14
-                </div>
-                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
-                  시작된지
-                </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl '>13</div>
+                <div className='text-sm text-gray-300'>시작한지</div>
               </div>
-              <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
-                  11,947
-                </div>
-                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
-                  멋사 대학 출신 학생 수
-                </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>11,947</div>
+                <div className='text-sm text-gray-300'>멋사 대학 출신 학생 수</div>
               </div>
-              <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
-                  1,634
-                </div>
-                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
-                  해커톤 최다 참여 인원
-                </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>1,634</div>
+                <div className='text-sm text-gray-300'>해커톤 최다 참여 인원</div>
               </div>
-              <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
-                  97
-                </div>
-                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
-                  누적 참여 대학
-                </div>
+              <div className='text-center drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                <div className='mb-2 text-5xl font-bold text-white md:text-6xl'>97</div>
+                <div className='text-sm text-gray-300'>누적 참여 대학</div>
               </div>
             </div>
 
@@ -233,7 +240,8 @@ export default function Home() {
         {/* CORE VALUES Section */}
         <section
           ref={coreValuesRef}
-          className='relative px-4 py-32 bg-gradient-to-b from-gray-900 via-orange-950/30 to-black'
+          className='relative px-4 py-32'
+          style={{ backgroundColor: '#1A1A1A' }}
         >
           <div className='max-w-5xl mx-auto'>
             {/* 타이틀 */}
@@ -278,32 +286,44 @@ export default function Home() {
         </section>
 
         {/* CTA Section - Be the LION */}
-        <section className='relative px-4 py-32 bg-black'>
-          <div className='max-w-4xl mx-auto'>
+        <section className='relative px-4 py-32' style={{ backgroundColor: '#1A1A1A' }}>
+          {/* Noise Star 배경 - CTA 섹션 전용 */}
+          <div
+            className='absolute inset-0 pointer-events-none z-[1]'
+            style={{
+              backgroundImage: `url(${noiseStar})`,
+              backgroundRepeat: 'repeat',
+              opacity: 0.6,
+            }}
+          ></div>
+
+          <div className='max-w-5xl mx-auto relative z-10 min-h-[400px] flex flex-col'>
             {/* 좌측 상단 꺾쇠 */}
-            <div className='mb-8 text-left'>
-              <div className='text-6xl font-bold text-orange-400 md:text-8xl'>⌜</div>
+            <div className='absolute top-0 left-0'>
+              <div className='text-6xl font-bold text-white md:text-7xl'>⌜</div>
             </div>
 
             {/* 중앙 텍스트 */}
-            <div className='mb-8 space-y-6 text-center'>
-              <h2 className='text-4xl font-bold leading-tight md:text-6xl'>
-                Be the LION,
-                <br />
-                Rule Your World!
-              </h2>
-              <p className='text-base text-gray-400'>+ 멋사랑 이름까지</p>
+            <div className='flex items-center flex-1'>
+              <div className='pt-8 pl-8 space-y-6 text-left'>
+                <h2 className='text-5xl font-bold leading-tight md:text-7xl'>
+                  Be the LION,
+                  <br />
+                  Rule Your World!
+                </h2>
+                <p className='text-lg font-bold'>: 멋사랑 어흥해</p>
+              </div>
             </div>
 
             {/* 우측 하단 꺾쇠 */}
-            <div className='mb-8 text-right'>
-              <div className='text-6xl font-bold text-orange-400 md:text-8xl'>⌟</div>
+            <div className='absolute right-0 bottom-20'>
+              <div className='text-6xl font-bold text-white md:text-7xl'>⌟</div>
             </div>
 
             {/* 버튼 */}
-            <div className='text-center'>
-              <button className='px-8 py-3 text-sm transition bg-transparent border border-gray-500 rounded hover:bg-gray-800'>
-                대표 홈페이지
+            <div className='pb-8 text-center'>
+              <button className='px-8 py-3 text-sm transition bg-transparent border border-gray-400 rounded hover:bg-gray-700'>
+                지원 하기 →
               </button>
             </div>
           </div>
