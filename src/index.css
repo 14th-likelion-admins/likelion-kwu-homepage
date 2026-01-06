@@ -5,43 +5,9 @@
 /* ============================================================================
    폰트 정의
    ============================================================================
-   로컬 폰트 파일을 사용하려면 아래 주석을 해제하고 폰트 파일 경로를 수정하세요.
-   폰트 파일은 src/assets/font/ 폴더에 저장하세요.
+   폰트는 src/utils/fonts.js에서 동적으로 로드됩니다.
+   Vite 빌드 시 자동으로 최적화되어 배포됩니다.
    ============================================================================ */
-
-/* Inter 폰트 (프로젝트 상세 모달에서 사용) */
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/font/Inter-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter';
-  src: url('../assets/font/Inter-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Space Grotesk 폰트 (프로젝트 홈 및 프로젝트 페이지에서 사용) */
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('../assets/font/SpaceGrotesk-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Space Grotesk';
-  src: url('../assets/font/SpaceGrotesk-Bold.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 @layer utilities {
   /* 느린 펄스 애니메이션 */
