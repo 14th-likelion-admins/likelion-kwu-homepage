@@ -5,7 +5,17 @@ module.exports = {
     './src/**/*.{js,jsx,ts,tsx}', // src 폴더 안 모든 JS/JSX/TS/TSX
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        'marquee-slow': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+      },
+      animation: {
+        'marquee-slow': 'marquee-slow 30s linear infinite',
+      },
+    },
   },
   plugins: [],
 }
