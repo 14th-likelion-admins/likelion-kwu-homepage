@@ -70,8 +70,8 @@ export default function Home() {
               <div
                 className='absolute'
                 style={{
-                  width: '552.5px',
-                  height: '552.5px',
+                  width: '600px',
+                  height: '600px',
                   left: '50%',
                   top: '50%',
                   transform: 'translate(-50%, -50%)',
@@ -82,18 +82,22 @@ export default function Home() {
 
               {/* FRONTEND - 버튼 */}
               <button
-                className='absolute transition-colors hover:text-orange-400'
+                className='absolute transition-all hover:text-orange-300'
                 style={{ top: '100px', left: '32%' }}
               >
-                <div className='text-3xl font-light tracking-wide'>FRONTEND</div>
+                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                  FRONTEND
+                </div>
               </button>
 
               {/* BACKEND - 버튼 */}
               <button
-                className='absolute transition-colors hover:text-orange-400'
+                className='absolute transition-all hover:text-orange-300'
                 style={{ top: '180px', left: '25%' }}
               >
-                <div className='text-3xl font-light tracking-wide'>BACKEND</div>
+                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                  BACKEND
+                </div>
               </button>
 
               {/* LIKE LION - 텍스트 */}
@@ -125,10 +129,12 @@ export default function Home() {
 
               {/* UXUI DESIGN - 버튼 */}
               <button
-                className='absolute transition-colors hover:text-orange-400'
+                className='absolute transition-all hover:text-orange-300'
                 style={{ bottom: '150px', left: '32%' }}
               >
-                <div className='text-3xl font-light tracking-wide'>UXUI DESIGN</div>
+                <div className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] transition-all'>
+                  UXUI DESIGN
+                </div>
               </button>
             </div>
           </div>
@@ -166,20 +172,36 @@ export default function Home() {
             {/* 통계 - 가운데 고정 */}
             <div className='flex flex-wrap justify-center gap-16 mb-20 md:gap-24'>
               <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>13</div>
-                <div className='text-sm text-gray-300'>시작한지</div>
+                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
+                  14
+                </div>
+                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                  시작된지
+                </div>
               </div>
               <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>11,947</div>
-                <div className='text-sm text-gray-300'>멋사 대학 출신 학생 수</div>
+                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
+                  11,947
+                </div>
+                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                  멋사 대학 출신 학생 수
+                </div>
               </div>
               <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>1,634</div>
-                <div className='text-sm text-gray-300'>해커톤 최다 참여 인원</div>
+                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
+                  1,634
+                </div>
+                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                  해커톤 최다 참여 인원
+                </div>
               </div>
               <div className='text-center'>
-                <div className='mb-2 text-5xl font-bold text-orange-300 md:text-6xl'>97</div>
-                <div className='text-sm text-gray-300'>누적 참여 대학</div>
+                <div className='mb-2 text-5xl font-bold text-white drop-shadow-[0_0_10px_rgba(251,146,60,0.8)] md:text-6xl'>
+                  97
+                </div>
+                <div className='text-sm font-bold text-gray-300 drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'>
+                  누적 참여 대학
+                </div>
               </div>
             </div>
 
