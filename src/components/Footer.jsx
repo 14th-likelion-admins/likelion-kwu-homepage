@@ -1,22 +1,27 @@
 // src/components/Footer.jsx
+import email from '../assets/email-icon.png'
+import insta from '../assets/insta-icon.png'
+import git from '../assets/git-icon.png'
+
 export default function Footer() {
   return (
-    <footer className='border-t border-gray-700 py-8'>
-      <div className='max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4'>
-        <p className='text-sm text-gray-500'>© 2025 LIKELION KWUNIV</p>
+    <footer className='py-4'>
+      <div className='flex flex-col items-center justify-between gap-4 px-4 mx-auto max-w-7xl md:flex-row'>
+        <p className='text-sm font-bold text-white'>광운대 멋쟁이사자처럼</p>
+        <p className='text-sm text-wihte'>© 2025 LIKELION KWUNIV</p>
 
-        <div className='flex items-center gap-6 text-gray-500 text-sm'>
-          <a href='#' className='hover:text-orange-400 transition'>
+        <div className='flex items-center gap-6 text-sm text-white'>
+          <a href='#' className='transition hover:text-orange-400'>
             Contact us!
           </a>
-          <a href='#' className='hover:text-orange-400 transition text-lg'>
-            🏠
+          <a href='#'>
+            <img src={email} alt='email' className='w-8 md:w-8' />
           </a>
-          <a href='#' className='hover:text-orange-400 transition text-lg'>
-            ✉️
+          <a href='#'>
+            <img src={insta} alt='email' className='w-6 h-6 md:w-6 md:h-6' />
           </a>
-          <a href='#' className='hover:text-orange-400 transition text-lg'>
-            📷
+          <a href='#'>
+            <img src={git} alt='email' className='w-6 h-6 md:w-6 md:h-6' />
           </a>
         </div>
       </div>
