@@ -29,9 +29,7 @@ import { getAllProjects } from '../data/projectsData'
 
 export default function Projects() {
   const [selectedGeneration, setSelectedGeneration] = useState('기수')
-  const [selectedActivity, setSelectedActivity] = useState('활동')
   const [showGenerationDropdown, setShowGenerationDropdown] = useState(false)
-  const [showActivityDropdown, setShowActivityDropdown] = useState(false)
   const [displayedProjects, setDisplayedProjects] = useState(12) // 초기 표시 개수
   const [isLoading, setIsLoading] = useState(false)
   const observerTarget = useRef(null)
@@ -41,8 +39,7 @@ export default function Projects() {
   const [searchParams] = useSearchParams()
   const projectIdParam = searchParams.get('id')
 
-  const generations = ['전체', '12TH', '13TH', '14TH']
-  const activities = ['전체', '중앙해커톤', '권역별 연합해커톤', '아이디어톤']
+  const generations = ['전체', '13TH', '12TH']
 
   // 프로젝트 데이터
   const allProjects = getAllProjects()
@@ -71,13 +68,10 @@ export default function Projects() {
         selectedGeneration === '기수' ||
         selectedGeneration === '전체' ||
         project.generation === selectedGeneration
-      const actMatch =
-        selectedActivity === '활동' ||
-        selectedActivity === '전체' ||
-        project.activity === selectedActivity
+      const actMatch = true
       return genMatch && actMatch
     })
-  }, [allProjects, selectedGeneration, selectedActivity])
+  }, [allProjects, selectedGeneration])
 
   // 필터 변경 시 표시 개수 초기화
   useEffect(() => {
@@ -121,7 +115,6 @@ export default function Projects() {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.dropdown-container')) {
         setShowGenerationDropdown(false)
-        setShowActivityDropdown(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
@@ -202,7 +195,6 @@ export default function Projects() {
             <button
               onClick={() => {
                 setShowGenerationDropdown(!showGenerationDropdown)
-                setShowActivityDropdown(false)
               }}
               className="border border-white rounded-full px-4 py-2 flex items-center justify-center gap-3 bg-[#1A1A1A] hover:bg-white/10 transition-colors"
               style={{
@@ -232,7 +224,8 @@ export default function Projects() {
             </button>
             {showGenerationDropdown && (
               <div
-                className="absolute mt-2 border border-white rounded-lg bg-[#1A1A1A] z-20 min-w-full shadow-lg overflow-hidden"
+                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-50 min-w-full shadow-lg"
+                style={{ overflow: 'visible' }}
               >
                 {generations.map((gen) => (
                   <button
@@ -255,64 +248,7 @@ export default function Projects() {
             )}
           </div>
 
-          {/* 활동 드롭다운 */}
-          <div className="relative dropdown-container">
-            <button
-              onClick={() => {
-                setShowActivityDropdown(!showActivityDropdown)
-                setShowGenerationDropdown(false)
-              }}
-              className="border border-white rounded-full px-4 py-2 flex items-center justify-center gap-3 bg-[#1A1A1A] hover:bg-white/10 transition-colors"
-              style={{
-                fontFamily: "'Space Grotesk', Helvetica, sans-serif",
-                fontSize: 'clamp(12px, 1vw, 16px)',
-                fontWeight: 300,
-                minWidth: '100px',
-              }}
-            >
-              <span>{selectedActivity}</span>
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                style={{ transform: 'rotate(90deg)' }}
-              >
-                <path
-                  d="M9 18L15 12L9 6"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-            {showActivityDropdown && (
-              <div
-                className="absolute mt-2 border border-white rounded-lg bg-[#1A1A1A] z-20 shadow-lg overflow-hidden"
-                style={{ whiteSpace: 'nowrap', minWidth: '150px' }}
-              >
-                {activities.map((activity) => (
-                  <button
-                    key={activity}
-                    onClick={() => {
-                      setSelectedActivity(activity)
-                      setShowActivityDropdown(false)
-                    }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg transition-colors"
-                    style={{
-                      fontFamily: "'Space Grotesk', Helvetica, sans-serif",
-                      fontSize: 'clamp(12px, 1vw, 16px)',
-                      fontWeight: 300,
-                    }}
-                  >
-                    {activity}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* 활동 드롭다운 (삭제됨) */}
         </div>
 
         {/* 프로젝트 그리드 */}
@@ -438,4 +374,5 @@ export default function Projects() {
       />
     </div>
   )
+
 }
