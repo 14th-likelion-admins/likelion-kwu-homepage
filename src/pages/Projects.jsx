@@ -157,12 +157,12 @@ export default function Projects() {
     <div className="bg-[#1A1A1A] text-white font-sans min-h-screen">
       <Header />
 
-      <main className="relative pt-20 pb-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+      <main className="relative pt-12 md:pt-20 pb-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
         {/* 제목과 뒤로가기 버튼 */}
-        <div className="flex items-center gap-4 mb-8 md:mb-12 mt-8 md:mt-12">
+        <div className="flex items-center gap-4 mb-6 md:mb-12 mt-4 md:mt-12">
           <Link
             to="/projectshome"
-            className="flex items-center justify-center flex-shrink-0"
+            className="hidden md:flex items-center justify-center flex-shrink-0"
             style={{
               width: '24px',
               height: '24px',
@@ -185,7 +185,7 @@ export default function Projects() {
             </svg>
           </Link>
           <h2
-            className="text-lg md:text-xl lg:text-2xl font-bold m-0"
+            className="hidden md:block text-lg md:text-xl lg:text-2xl font-bold m-0"
             style={{
               fontFamily: "'Space Grotesk', Helvetica, sans-serif",
               lineHeight: '1.2',
@@ -195,8 +195,8 @@ export default function Projects() {
           </h2>
         </div>
 
-        {/* 드롭다운 필터 - 첫번째 프로젝트 카드 상단 좌측 끝에 맞춤 */}
-        <div className="flex flex-wrap gap-4" style={{ paddingLeft: '0', marginBottom: '23.5px', marginTop: '23px' }}>
+        {/* 드롭다운 필터 */}
+        <div className="flex flex-wrap gap-4 pl-0 mt-6 mb-6">
           {/* 기수 드롭다운 */}
           <div className="relative dropdown-container">
             <button
@@ -232,7 +232,7 @@ export default function Projects() {
             </button>
             {showGenerationDropdown && (
               <div
-                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-20 min-w-full shadow-lg overflow-hidden"
+                className="absolute mt-2 border border-white rounded-lg bg-[#1A1A1A] z-20 min-w-full shadow-lg overflow-hidden"
               >
                 {generations.map((gen) => (
                   <button
@@ -241,7 +241,7 @@ export default function Projects() {
                       setSelectedGeneration(gen)
                       setShowGenerationDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-2xl last:rounded-b-2xl transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -290,16 +290,8 @@ export default function Projects() {
             </button>
             {showActivityDropdown && (
               <div
-                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-50 shadow-lg"
-                style={{
-                  whiteSpace: 'nowrap',
-                  minWidth: '150px',
-                  left: 0,
-                  top: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  overflow: 'visible', // 드롭다운 아이템이 잘리지 않도록 보장
-                }}
+                className="absolute mt-2 border border-white rounded-lg bg-[#1A1A1A] z-20 shadow-lg overflow-hidden"
+                style={{ whiteSpace: 'nowrap', minWidth: '150px' }}
               >
                 {activities.map((activity) => (
                   <button
@@ -308,7 +300,7 @@ export default function Projects() {
                       setSelectedActivity(activity)
                       setShowActivityDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-2xl last:rounded-b-2xl transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -371,19 +363,19 @@ export default function Projects() {
                     className="text-white"
                     style={{
                       fontFamily: "'Inter', sans-serif",
-                      fontSize: 'clamp(18px, 2vw, 22px)',
-                      lineHeight: '1',
+                      fontSize: 'clamp(20px, 2.5vw, 24px)',
+                      lineHeight: '1.2',
                       fontWeight: 500,
                     }}
                   >
                     {project.title}
                   </span>
                   <span
-                    className="font-bold text-white/50 inline-flex items-end"
+                    className="font-bold text-white/50"
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: 'clamp(14px, 1.8vw, 18px)',
-                      lineHeight: '1',
+                      lineHeight: '1.2',
                       marginLeft: '20px',
                     }}
                   >
@@ -397,7 +389,7 @@ export default function Projects() {
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: 400,
-                    fontSize: 'clamp(14px, 1.6vw, 18px)',
+                    fontSize: 'clamp(16px, 2vw, 20px)',
                     lineHeight: '1.2',
                   }}
                 >
