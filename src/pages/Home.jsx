@@ -236,8 +236,12 @@ export default function Home() {
                   transitionDelay: '0s',
                 }}
               >
-                <div className='text-4xl font-light leading-tight tracking-wide'>LIKE</div>
-                <div className='text-4xl font-light leading-tight tracking-wide'>LION</div>
+                <div className='hidden text-4xl font-light leading-tight tracking-wide md:block'>
+                  LIKE
+                </div>
+                <div className='hidden text-4xl font-light leading-tight tracking-wide md:block'>
+                  LION
+                </div>
               </div>
 
               {/* Exploding X - 텍스트 */}
@@ -252,7 +256,9 @@ export default function Home() {
                   transitionDelay: '0s',
                 }}
               >
-                <div className='text-4xl font-light tracking-wider text-white'>Exploding X</div>
+                <div className='hidden text-4xl font-light tracking-wider text-white lg:inline-block'>
+                  Exploding X
+                </div>
               </div>
 
               {/* KWAG WOON UNIV - 텍스트 */}
@@ -315,7 +321,7 @@ export default function Home() {
             {/* ABOUT 큰 타이틀 - 왼쪽에서 등장, 왼쪽 치우침 */}
             <div className='pl-8 mb-16 overflow-hidden text-left md:pl-16'>
               <h2
-                className={`text-6xl md:text-8xl lg:text-9xl font-bold text-white transition-all duration-1000 ${
+                className={`text-6xl md:text-8xl lg:text-9xl text-white transition-all duration-1000 ${
                   aboutVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'
                 }`}
               >
@@ -346,7 +352,7 @@ export default function Home() {
             {/* LIKELION 타이틀 - 오른쪽에서 등장, 오른쪽 치우침 */}
             <div className='pr-8 mb-12 overflow-hidden text-right md:pr-16'>
               <h3
-                className={`text-6xl md:text-8xl lg:text-9xl font-bold tracking-wider transition-all duration-1000 ${
+                className={`text-6xl md:text-8xl lg:text-9xl tracking-wider transition-all duration-1000 ${
                   aboutVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
                 }`}
               >
@@ -358,7 +364,7 @@ export default function Home() {
             <div className='flex justify-center'>
               <button
                 onClick={handleViewClick}
-                className={`px-8 py-3 border border-gray-400 rounded-full text-sm ${
+                className={`px-8 py-3 border border-gray-400 rounded-full text-sm transition-all duration-1000 ${
                   aboutVisible ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'
                 }`}
                 style={{ transitionDelay: '300ms' }}
