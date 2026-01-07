@@ -200,7 +200,7 @@ export default function Projects() {
               </svg>
             </button>
             {showGenerationDropdown && (
-              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full shadow-lg">
+              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full shadow-lg overflow-hidden">
                 {generations.map((gen) => (
                   <button
                     key={gen}
@@ -208,7 +208,7 @@ export default function Projects() {
                       setSelectedGeneration(gen)
                       setShowGenerationDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full first:rounded-t-full last:rounded-b-full transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -256,7 +256,7 @@ export default function Projects() {
               </svg>
             </button>
             {showActivityDropdown && (
-              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full shadow-lg">
+              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full w-max shadow-lg overflow-hidden">
                 {activities.map((activity) => (
                   <button
                     key={activity}
@@ -264,7 +264,7 @@ export default function Projects() {
                       setSelectedActivity(activity)
                       setShowActivityDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full first:rounded-t-full last:rounded-b-full transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full whitespace-nowrap transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
