@@ -27,17 +27,18 @@ export default function Header() {
             <span className='text-lg font-bold md:text-xl'>광운대 멋쟁이 사자처럼</span>
           </Link>
 
-          <nav className='space-x-6 text-sm md:flex'>
-            <a href='#about' className='hover:text-orange-400'>
+          <nav className='flex items-center gap-6 text-sm'>
+            {/* ABOUT 임시 숨김 */}
+            {/* <a href='#about' className='hover:text-orange-400'>
               ABOUT
-            </a>
+            </a> */}
             <Link to='/projectshome' className='hover:text-orange-400'>
               PROJECT
             </Link>
             <a
               href='#'
               onClick={handleApplyClick}
-              className='px-3 py-1 border border-white rounded-md'
+              className='inline-flex items-center px-3 py-1 border border-white rounded-md'
             >
               지원하기
             </a>

@@ -78,6 +78,11 @@ export default function ProjectsHome() {
   const [scale, setScale] = useState(1)
   const [selectedProject, setSelectedProject] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+
+  const dragStartXRef = useRef(0)
+  const dragMovedRef = useRef(false)
 
   // 화면 크기에 따라 스케일 계산 (데스크탑/노트북만)
   useEffect(() => {
@@ -166,6 +171,55 @@ export default function ProjectsHome() {
   const moreButtonLeftValue = leftButtonLeftValue
   const moreButtonLeft = `${moreButtonLeftValue}px`
   const moreButtonTop = (838 - 50) * scale
+
+  const handleDragStart = (clientX) => {
+    dragStartXRef.current = clientX
+    dragMovedRef.current = false
+    setIsDragging(true)
+  }
+
+  const handleDragMove = (clientX) => {
+    if (!isDragging) return
+    const delta = clientX - dragStartXRef.current
+    if (Math.abs(delta) > 8) {
+      dragMovedRef.current = true
+    }
+    setDragOffset(delta)
+  }
+
+  const handleDragEnd = () => {
+    if (!isDragging) return
+    const delta = dragOffset
+    const threshold = (cardWidth + cardGap) * 0.2
+
+    if (delta > threshold && currentIndex > 0) {
+      handlePrev()
+    } else if (delta < -threshold && currentIndex < projects.length - 2) {
+      handleNext()
+    }
+
+    setDragOffset(0)
+    setIsDragging(false)
+    // 드래그 후 발생할 수 있는 클릭 방지
+    setTimeout(() => {
+      dragMovedRef.current = false
+    }, 0)
+  }
+
+  const onPointerDown = (e) => {
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    handleDragStart(clientX)
+  }
+
+  const onPointerMove = (e) => {
+    if (!isDragging) return
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX
+    handleDragMove(clientX)
+  }
+
+  const onPointerUp = () => {
+    handleDragEnd()
+  }
 
   // 데스크탑 레이아웃만
   return (
@@ -353,11 +407,22 @@ export default function ProjectsHome() {
                 }}
               >
                 <div
-                  className="flex transition-transform duration-500 ease-in-out"
+                  className="flex select-none"
                   style={{
-                    transform: `translateX(-${currentIndex * (cardWidth + cardGap)}px)`,
+                    transform: `translateX(calc(-${currentIndex * (cardWidth + cardGap)}px + ${dragOffset}px))`,
                     width: `${(cardWidth + cardGap) * projects.length - cardGap}px`,
+                    transition: isDragging ? 'none' : 'transform 0.5s ease-in-out',
+                    touchAction: 'pan-y',
+                    cursor: isDragging ? 'grabbing' : 'grab',
                   }}
+                  onMouseDown={onPointerDown}
+                  onMouseMove={onPointerMove}
+                  onMouseUp={onPointerUp}
+                  onMouseLeave={onPointerUp}
+                  onTouchStart={onPointerDown}
+                  onTouchMove={onPointerMove}
+                  onTouchEnd={onPointerUp}
+                  onTouchCancel={onPointerUp}
                 >
                   {projects.map((project, index) => {
                     // 전체 프로젝트 데이터에서 상세 정보 가져오기 (이미 위에서 가져온 allProjects 사용)
@@ -366,6 +431,7 @@ export default function ProjectsHome() {
                       <div
                         key={project.id}
                         onClick={() => {
+                          if (dragMovedRef.current) return
                           if (fullProject && fullProject.detail) {
                             setSelectedProject(fullProject)
                             setIsModalOpen(true)

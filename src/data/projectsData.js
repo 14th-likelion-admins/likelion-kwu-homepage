@@ -80,6 +80,8 @@ export const getAllProjects = () => {
         description: '프로젝트 한줄 소개',
         image: image,
         thumbnail: getThumbnailImageSync(projectId),
+        generation: '미지정',
+        activity: '미지정',
         detail: {
           thumbnail: image,
           overview: '프로젝트 개요가 여기에 들어갑니다.',
@@ -102,6 +104,8 @@ export const getAllProjects = () => {
     // 17번 프로젝트: 리본(RE:born)
     {
       id: 17,
+      generation: '13TH',
+      activity: '권역별 연합해커톤',
       title: '리본(RE:born)',
       tag: 'WEB',
       description: 'AI 유기동물 맞춤 추천 서비스',
@@ -133,6 +137,8 @@ AI 추천과 정보 통합을 통해 유기동물 입양 과정을 보다 쉽고
     // 16번 프로젝트: SafeScan
     {
       id: 16,
+      generation: '13TH',
+      activity: '권역별 연합해커톤',
       title: 'SafeScan',
       tag: 'WEB',
       description: 'AI 디지털 범죄 사전 탐지 플랫폼',
@@ -165,6 +171,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 15번 프로젝트: 살펴
     {
       id: 15,
+      generation: '13TH',
+      activity: '권역별 연합해커톤',
       title: '살펴',
       tag: 'WEB',
       description: '주민 참여 안전 지도 서비스',
@@ -198,6 +206,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 14번 프로젝트: 과잉제로
     {
       id: 14,
+      generation: '13TH',
+      activity: '권역별 연합해커톤',
       title: '과잉제로',
       tag: 'WEB',
       description: '과잉진료 분석 서비스',
@@ -228,6 +238,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 13번 프로젝트: FeedUp
     {
       id: 13,
+      generation: '13TH',
+      activity: '중앙해커톤',
       title: 'FeedUp',
       tag: 'WEB',
       description: 'SNS 프로모션 플랫폼',
@@ -256,6 +268,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 12번 프로젝트: 한집말이
     {
       id: 12,
+      generation: '13TH',
+      activity: '중앙해커톤',
       title: '한집말이',
       tag: 'APP',
       description: 'AI 기반 부동산 계약 해설 서비스',
@@ -284,6 +298,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 11번 프로젝트: 손주AI (민원가이드)
     {
       id: 11,
+      generation: '13TH',
+      activity: '중앙해커톤',
       title: '손주AI',
       tag: 'APP',
       description: '음성 기반 AI 민원 가이드 서비스',
@@ -317,6 +333,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 10번 프로젝트: 슬금(SLGM)
     {
       id: 10,
+      generation: '13TH',
+      activity: '중앙해커톤',
       title: '슬금(SLGM)',
       tag: 'APP',
       description: 'AI 기반 절약 챌린지',
@@ -349,6 +367,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 9번 프로젝트: 손주 (AI 교통동행서비스)
     {
       id: 9,
+      generation: '13TH',
+      activity: '아이디어톤',
       title: '손주',
       tag: 'APP',
       description: 'AI 기반 교통 동행 서비스',
@@ -384,6 +404,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 8번 프로젝트: 피싱가드
     {
       id: 8,
+      generation: '13TH',
+      activity: '아이디어톤',
       title: '피싱가드',
       tag: 'APP',
       description: 'AI 기반 유기동물 맞춤 추천 서비스',
@@ -416,6 +438,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 7번 프로젝트: Room-Mate
     {
       id: 7,
+      generation: '13TH',
+      activity: '아이디어톤',
       title: 'Room-Mate',
       tag: 'APP',
       description: '외국인 유학생을 위한 주거 서비스',
@@ -449,6 +473,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 6번 프로젝트: 오늘의 나
     {
       id: 6,
+      generation: '13TH',
+      activity: '아이디어톤',
       title: '오늘의 나',
       tag: 'APP',
       description: 'AI 기반 일기 작성 서비스',
@@ -476,6 +502,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 5번 프로젝트: Broom
     {
       id: 5,
+      generation: '12TH',
+      activity: '권역별 연합해커톤',
       title: 'Broom',
       tag: 'APP',
       description: '광운대 맞춤 예비군 이동/모집 서비스',
@@ -500,6 +528,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 4번 프로젝트: 돈두댓
     {
       id: 4,
+      generation: '12TH',
+      activity: '중앙해커톤',
       title: '돈두댓',
       tag: 'APP',
       description: 'Not-Todo List 습관 개선 서비스',
@@ -525,6 +555,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 3번 프로젝트: 메모리 - 나를 메모하다
     {
       id: 3,
+      generation: '12TH',
+      activity: '중앙해커톤',
       title: '메모리 - 나를 메모하다',
       tag: 'APP',
       description: '감정 메타인지 기반 자기성찰 서비스',
@@ -548,6 +580,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 2번 프로젝트: 4온약어때
     {
       id: 2,
+      generation: '12TH',
+      activity: '중앙해커톤',
       title: '4온약어때',
       tag: 'APP',
       description: '처방전 및 의약품 분석 서비스 ',
@@ -571,6 +605,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
     // 1번 프로젝트: 알콩달콩
     {
       id: 1,
+      generation: '12TH',
+      activity: '중앙해커톤',
       title: '알콩달콩',
       tag: 'APP',
       description: '가족 건강 관리 및 소통 촉진 서비스',
@@ -601,7 +637,8 @@ SafeScan은 이러한 문제를 해결하기 위해 공공데이터 API를 활�
 
   // 상세 정보가 있는 프로젝트로 기본 데이터 덮어쓰기
   for (const project of predefinedProjects) {
-    projectsMap.set(project.id, project)
+    const base = projectsMap.get(project.id) || {}
+    projectsMap.set(project.id, { ...base, ...project })
   }
 
   // ============================================================================

@@ -10,18 +10,20 @@ export default function Footer() {
         <p className='text-sm font-bold text-white'>광운대 멋쟁이사자처럼</p>
         <p className='text-sm text-wihte'>© 2025 LIKELION KWUNIV</p>
 
-        <div className='flex items-center gap-6 text-sm text-white'>
-          <a href='#' className='transition hover:text-orange-400'>
+        <div className='flex items-center gap-6 text-sm text-white md:ml-auto'>
+          <a href='mailto:dofqls0127@gmail.com' className='transition hover:text-orange-400'>
             Contact us!
           </a>
-          <a href='#'>
+          <a href='mailto:dofqls0127@gmail.com' aria-label='Send email to dofqls0127@gmail.com'>
             <img src={email} alt='email' className='w-8 md:w-8' />
           </a>
-          <a href='#'>
-            <img src={insta} alt='email' className='w-6 h-6 md:w-6 md:h-6' />
-          </a>
-          <a href='#'>
-            <img src={git} alt='email' className='w-6 h-6 md:w-6 md:h-6' />
+          <a
+            href='https://www.instagram.com/likelion_kwangwoon/'
+            target='_blank'
+            rel='noopener noreferrer'
+            aria-label='Visit likelion_kwangwoon Instagram'
+          >
+            <img src={insta} alt='instagram' className='w-6 h-6 md:w-6 md:h-6' />
           </a>
         </div>
       </div>

@@ -1,14 +1,27 @@
 /**
  * ============================================================================
- * Projects.jsx - 프로젝트 목록 페이지
- * ============================================================================
- * 
- * 프로젝트 목록을 표시하고, 필터링 및 무한 스크롤 기능을 제공하는 페이지입니다.
- * 
- * ============================================================================
+ * Projects.jsx - 프로젝트 목록 페이지 (Updated)
+ *
+ * 이 파일은 프로젝트 목록을 표시하고, 필터링 및 무한 스크롤 기능을 제공하는
+ * 페이지입니다. 기존 구현에서 기수와 활동 드롭다운의 모서리 둥글기와
+ * 가로 크기를 조절하여 보다 깔끔한 UI를 구현합니다.
+ *
+ * 변경 사항:
+ * 1. 기수 드롭다운의 각 항목 모서리 둥글기를 "기수" 버튼의 둥글기와
+ *    비슷한 정도로 줄여 좀 더 각진 느낌이 들도록 수정했습니다. 각 항목에
+ *    불필요한 `rounded-full` 클래스를 제거하고, 첫 번째와 마지막 항목에만
+ *    작은 반경(`rounded-t-lg` 및 `rounded-b-lg`)을 부여했습니다. 전체
+ *    드롭다운 박스에는 `rounded-lg`를 적용해 버튼과 유사한 외형을 유지합니다.
+ *
+ * 2. 활동 드롭다운의 드롭다운 박스는 좌측 기준 위치를 유지한 채 우측으로만
+ *    넓어지도록 `whiteSpace: 'nowrap'`과 `minWidth: '150px'` 스타일을
+ *    추가했습니다. 이를 통해 긴 항목 이름(예: "권역별 연합해커톤")도 줄바꿈
+ *    없이 깔끔하게 표시됩니다. 이 드롭다운 역시 모서리 둥글기를 줄여
+ *    `rounded-lg`를 사용하고, 각 항목에는 `rounded-t-lg`, `rounded-b-lg`
+ *    클래스를 적용했습니다.
  */
 
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Header from '../components/Header'
 import ProjectDetailModal from '../components/ProjectDetailModal'
@@ -28,8 +41,8 @@ export default function Projects() {
   const [searchParams] = useSearchParams()
   const projectIdParam = searchParams.get('id')
 
-  const generations = ['13TH', '14TH', '15TH']
-  const activities = ['중앙해커톤', '권역별 연합해커톤', '아이디어톤']
+  const generations = ['전체', '12TH', '13TH', '14TH']
+  const activities = ['전체', '중앙해커톤', '권역별 연합해커톤', '아이디어톤']
 
   // 프로젝트 데이터
   const allProjects = getAllProjects()
@@ -52,21 +65,39 @@ export default function Projects() {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  const filteredProjects = useMemo(() => {
+    return allProjects.filter((project) => {
+      const genMatch =
+        selectedGeneration === '기수' ||
+        selectedGeneration === '전체' ||
+        project.generation === selectedGeneration
+      const actMatch =
+        selectedActivity === '활동' ||
+        selectedActivity === '전체' ||
+        project.activity === selectedActivity
+      return genMatch && actMatch
+    })
+  }, [allProjects, selectedGeneration, selectedActivity])
+
+  // 필터 변경 시 표시 개수 초기화
+  useEffect(() => {
+    setDisplayedProjects((prev) => Math.min(12, filteredProjects.length || prev))
+  }, [filteredProjects.length])
+
   // 무한스크롤 구현
   const loadMoreProjects = useCallback(() => {
     if (isLoading) return
     setIsLoading(true)
-    // 시뮬레이션: 실제로는 API 호출
     setTimeout(() => {
-      setDisplayedProjects((prev) => Math.min(prev + 12, allProjects.length))
+      setDisplayedProjects((prev) => Math.min(prev + 12, filteredProjects.length))
       setIsLoading(false)
     }, 500)
-  }, [isLoading, allProjects.length])
+  }, [isLoading, filteredProjects.length])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && displayedProjects < allProjects.length) {
+        if (entries[0].isIntersecting && displayedProjects < filteredProjects.length) {
           loadMoreProjects()
         }
       },
@@ -83,7 +114,7 @@ export default function Projects() {
         observer.unobserve(currentTarget)
       }
     }
-  }, [displayedProjects, allProjects.length, loadMoreProjects])
+  }, [displayedProjects, filteredProjects.length, loadMoreProjects])
 
   // 외부 클릭 시 드롭다운 닫기
   useEffect(() => {
@@ -120,7 +151,7 @@ export default function Projects() {
     }
   }, [projectIdParam])
 
-  const visibleProjects = allProjects.slice(0, displayedProjects)
+  const visibleProjects = filteredProjects.slice(0, displayedProjects)
 
   return (
     <div className="bg-[#1A1A1A] text-white font-sans min-h-screen">
@@ -200,7 +231,9 @@ export default function Projects() {
               </svg>
             </button>
             {showGenerationDropdown && (
-              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full shadow-lg">
+              <div
+                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-20 min-w-full shadow-lg overflow-hidden"
+              >
                 {generations.map((gen) => (
                   <button
                     key={gen}
@@ -208,7 +241,7 @@ export default function Projects() {
                       setSelectedGeneration(gen)
                       setShowGenerationDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full first:rounded-t-full last:rounded-b-full transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-2xl last:rounded-b-2xl transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -256,7 +289,18 @@ export default function Projects() {
               </svg>
             </button>
             {showActivityDropdown && (
-              <div className="absolute mt-2 border border-white rounded-full bg-[#1A1A1A] z-20 min-w-full shadow-lg">
+              <div
+                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-50 shadow-lg"
+                style={{
+                  whiteSpace: 'nowrap',
+                  minWidth: '150px',
+                  left: 0,
+                  top: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  overflow: 'visible', // 드롭다운 아이템이 잘리지 않도록 보장
+                }}
+              >
                 {activities.map((activity) => (
                   <button
                     key={activity}
@@ -264,7 +308,7 @@ export default function Projects() {
                       setSelectedActivity(activity)
                       setShowActivityDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 rounded-full first:rounded-t-full last:rounded-b-full transition-colors"
+                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-2xl last:rounded-b-2xl transition-colors"
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -327,19 +371,19 @@ export default function Projects() {
                     className="text-white"
                     style={{
                       fontFamily: "'Inter', sans-serif",
-                      fontSize: 'clamp(20px, 2.5vw, 24px)',
-                      lineHeight: '1.2',
+                      fontSize: 'clamp(18px, 2vw, 22px)',
+                      lineHeight: '1',
                       fontWeight: 500,
                     }}
                   >
                     {project.title}
                   </span>
                   <span
-                    className="font-bold text-white/50"
+                    className="font-bold text-white/50 inline-flex items-end"
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: 'clamp(14px, 1.8vw, 18px)',
-                      lineHeight: '1.2',
+                      lineHeight: '1',
                       marginLeft: '20px',
                     }}
                   >
@@ -353,7 +397,7 @@ export default function Projects() {
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: 400,
-                    fontSize: 'clamp(16px, 2vw, 20px)',
+                    fontSize: 'clamp(14px, 1.6vw, 18px)',
                     lineHeight: '1.2',
                   }}
                 >
@@ -370,9 +414,7 @@ export default function Projects() {
             ref={observerTarget}
             className="flex justify-center items-center py-8"
           >
-            {isLoading && (
-              <div className="text-white/50">로딩 중...</div>
-            )}
+            {isLoading && <div className="text-white/50">로딩 중...</div>}
           </div>
         )}
 
