@@ -1,10 +1,22 @@
 // src/components/Header.jsx
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import logo from '../assets/kw-logo.png' // 로고 이미지 경로
 
 export default function Header() {
   const [showToast, setShowToast] = useState(false)
+  const navigate = useNavigate()
+
+  const handleProjectClick = (e) => {
+    try {
+      if (window && window.innerWidth < 768) {
+        e.preventDefault()
+        navigate('/projects')
+      }
+    } catch (err) {
+      // fallback: do nothing and allow Link to handle navigation
+    }
+  }
 
   const handleApplyClick = (e) => {
     e.preventDefault()
@@ -24,7 +36,7 @@ export default function Header() {
           {/* 로고 클릭 → 메인 */}
           <Link to='/' className='flex items-center gap-2'>
             <img src={logo} alt='LIKELION Logo' className='w-8 h-8 md:w-10 md:h-10' />
-            <span className='text-lg font-bold md:text-xl'>광운대 멋쟁이 사자처럼</span>
+            <span className='hidden md:inline-block text-lg font-bold md:text-xl'>광운대 멋쟁이 사자처럼</span>
           </Link>
 
           <nav className='flex items-center gap-6 text-sm'>
@@ -32,7 +44,7 @@ export default function Header() {
             {/* <a href='#about' className='hover:text-orange-400'>
               ABOUT
             </a> */}
-            <Link to='/projectshome' className='hover:text-orange-400'>
+            <Link to='/projectshome' onClick={handleProjectClick} className='hover:text-orange-400'>
               PROJECT
             </Link>
             <a
