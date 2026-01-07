@@ -197,7 +197,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  className='text-2xl md:text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
                   style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
                 >
                   FRONTEND
@@ -217,7 +217,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  className='text-2xl md:text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
                   style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
                 >
                   BACKEND
@@ -274,9 +274,15 @@ export default function Home() {
                   transitionDelay: '0s',
                 }}
               >
-                <div className='text-4xl font-light leading-tight tracking-wide'>KWAG</div>
-                <div className='text-4xl font-light leading-tight tracking-wide'>WOON</div>
-                <div className='text-4xl font-light leading-tight tracking-wide'>UNIV</div>
+                <div className='text-3xl font-light leading-tight tracking-wide md:text-4xl'>
+                  KWAG
+                </div>
+                <div className='text-3xl font-light leading-tight tracking-wide md:text-4xl'>
+                  WOON
+                </div>
+                <div className='text-3xl font-light leading-tight tracking-wide md:text-4xl'>
+                  UNIV
+                </div>
               </div>
 
               {/* UXUI DESIGN - 버튼 */}
@@ -292,7 +298,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className='text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
+                  className='text-2xl md:text-3xl font-light tracking-wide hover:font-bold hover:drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]'
                   style={{ transition: 'font-weight 0.3s, filter 0.3s' }}
                 >
                   UXUI DESIGN
@@ -302,9 +308,13 @@ export default function Home() {
           </div>
 
           {/* 우측 하단 버튼 영역 */}
-          <div className='absolute flex items-center gap-4 right-12 bottom-12 z-20'>
+          <div className='absolute z-20 flex items-center gap-4 right-12 bottom-12'>
             {/* 지원 하기 버튼 - 이미지 */}
-              <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80 z-30' type='button'>
+            <button
+              onClick={handleApplyClick}
+              className='z-30 transition-opacity hover:opacity-80'
+              type='button'
+            >
               <img src={supportButton} alt='지원 하기' className='w-auto h-12' />
             </button>
           </div>
@@ -475,11 +485,15 @@ export default function Home() {
             </div>
 
             {/* 버튼 */}
-              <div className='pb-8 text-center relative z-20'>
-                <button type='button' onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
-                  <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
-                </button>
-              </div>
+            <div className='relative z-20 pb-8 text-center'>
+              <button
+                type='button'
+                onClick={handleApplyClick}
+                className='transition-opacity hover:opacity-80'
+              >
+                <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
+              </button>
+            </div>
           </div>
         </section>
       </main>
