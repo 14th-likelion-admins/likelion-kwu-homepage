@@ -302,9 +302,9 @@ export default function Home() {
           </div>
 
           {/* 우측 하단 버튼 영역 */}
-          <div className='absolute flex items-center gap-4 right-12 bottom-12'>
+          <div className='absolute flex items-center gap-4 right-12 bottom-12 z-20'>
             {/* 지원 하기 버튼 - 이미지 */}
-            <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+              <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80 z-30' type='button'>
               <img src={supportButton} alt='지원 하기' className='w-auto h-12' />
             </button>
           </div>
@@ -475,11 +475,11 @@ export default function Home() {
             </div>
 
             {/* 버튼 */}
-            <div className='pb-8 text-center'>
-              <button onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
-                <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
-              </button>
-            </div>
+              <div className='pb-8 text-center relative z-20'>
+                <button type='button' onClick={handleApplyClick} className='transition-opacity hover:opacity-80'>
+                  <img src={supportButton} alt='지원 하기' className='w-auto h-12 mx-auto' />
+                </button>
+              </div>
           </div>
         </section>
       </main>

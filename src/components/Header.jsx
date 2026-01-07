@@ -46,13 +46,13 @@ export default function Header() {
             <Link to='/projectshome' onClick={handleProjectClick} className='hover:text-orange-400'>
               PROJECT
             </Link>
-            <a
-              href='#'
+            <button
+              type='button'
               onClick={handleApplyClick}
               className='inline-flex items-center px-3 py-1 border border-white rounded-md'
             >
               지원하기
-            </a>
+            </button>
           </nav>
         </div>
       </header>
