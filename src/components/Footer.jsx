@@ -6,9 +6,9 @@ import git from '../assets/git-icon.png'
 export default function Footer() {
   return (
     <footer className='py-4'>
-      <div className='flex flex-col items-center justify-between gap-4 px-4 mx-auto max-w-7xl md:flex-row'>
+      <div className='relative flex flex-col items-center justify-between gap-4 px-4 mx-auto max-w-7xl md:flex-row'>
         <p className='text-sm font-bold text-white'>광운대 멋쟁이사자처럼</p>
-        <p className='text-sm text-wihte'>© 2025 LIKELION KWUNIV</p>
+        <p className='text-sm text-white md:absolute md:left-1/2 md:transform md:-translate-x-1/2 text-center'>© 2026 LIKELION KWUNIV</p>
 
         <div className='flex items-center gap-6 text-sm text-white md:ml-auto'>
           <a href='mailto:dofqls0127@gmail.com' className='transition hover:text-orange-400'>
