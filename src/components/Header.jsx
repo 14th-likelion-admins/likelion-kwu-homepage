@@ -1,7 +1,7 @@
 // src/components/Header.jsx
 import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
-import logo from '../assets/kw-logo.png' 
+import logo from '../assets/kw-logo.png'
 
 export default function Header() {
   const [showToast, setShowToast] = useState(false)
@@ -13,8 +13,7 @@ export default function Header() {
         e.preventDefault()
         navigate('/projects')
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   const handleApplyClick = (e) => {
@@ -35,7 +34,9 @@ export default function Header() {
           {/* 로고 클릭 → 메인 */}
           <Link to='/' className='flex items-center gap-2'>
             <img src={logo} alt='LIKELION Logo' className='w-8 h-8 md:w-10 md:h-10' />
-            <span className='hidden md:inline-block text-lg font-bold md:text-xl'>광운대 멋쟁이사자처럼</span>
+            <span className='hidden text-lg font-bold md:inline-block md:text-xl'>
+              광운대 멋쟁이사자처럼
+            </span>
           </Link>
 
           <nav className='flex items-center gap-6 text-sm'>
@@ -60,8 +61,12 @@ export default function Header() {
       {/* Toast 알림 */}
       {showToast && (
         <div
-          className='fixed top-24 left-1/2 -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl'
-          style={{ animation: 'slideDown 0.3s ease-out' }}
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-4 py-3 md:px-6 md:py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          style={{
+            animation: 'slideDown 0.3s ease-out',
+            maxWidth: '90vw',
+            minWidth: '280px',
+          }}
         >
           <style>{`
             @keyframes slideDown {
@@ -75,7 +80,11 @@ export default function Header() {
               }
             }
           `}</style>
-          <p className='text-center'>지금은 모집기간이 아니에요! 모집 기간을 확인해주세요 :)</p>
+          <p className='text-sm leading-relaxed text-center md:text-base'>
+            지금은 아기사자 지원기간이 아니에요!
+            <br />
+            모집 기간을 확인해주세요 :)
+          </p>
         </div>
       )}
     </>
