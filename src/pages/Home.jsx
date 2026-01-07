@@ -92,9 +92,11 @@ export default function Home() {
       {/* 지원 Toast 알림 */}
       {showToast && (
         <div
-          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-4 py-3 md:px-6 md:py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
           style={{
             animation: 'slideDown 0.3s ease-out',
+            maxWidth: '90vw',
+            minWidth: '280px',
           }}
         >
           <style>{`
@@ -109,16 +111,21 @@ export default function Home() {
               }
             }
           `}</style>
-          <p className='text-center'>지금은 모집기간이 아니에요! 모집 기간을 확인해주세요 :)</p>
+          <p className='text-sm leading-relaxed text-center md:text-base'>
+            지금은 아기사자 지원기간이 아니에요!
+            <br />
+            모집 기간을 확인해주세요 :)
+          </p>
         </div>
       )}
 
       {/* view Toast 알림 */}
       {viewToast && (
         <div
-          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
+          className='fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-4 py-3 md:px-6 md:py-4 bg-gray-800 text-white rounded-lg shadow-2xl border border-gray-600'
           style={{
             animation: 'slideDown 0.3s ease-out',
+            maxWidth: '90vw',
           }}
         >
           <style>{`
@@ -133,7 +140,7 @@ export default function Home() {
               }
             }
           `}</style>
-          <p className='text-center'>준비 중이에요!</p>
+          <p className='text-sm text-center md:text-base'>준비 중이에요!</p>
         </div>
       )}
 
