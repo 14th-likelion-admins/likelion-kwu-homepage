@@ -282,7 +282,7 @@ export default function Home() {
                 }}
               >
                 <div className='text-3xl font-light leading-tight tracking-wide md:text-4xl'>
-                  KWAG
+                  KWANG
                 </div>
                 <div className='text-3xl font-light leading-tight tracking-wide md:text-4xl'>
                   WOON
