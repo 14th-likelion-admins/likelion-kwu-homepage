@@ -1,7 +1,8 @@
 // src/pages/ProjectsHome.jsx
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import bkImage1 from '../assets/bk-image-1.png'
 import noiseTexture from '../assets/noise-texture.png'
 import { getAllProjects, getLatestProjects } from '../data/projectsData'
@@ -11,12 +12,12 @@ import ProjectDetailModal from '../components/ProjectDetailModal'
  * ============================================================================
  * ProjectsHome 페이지
  * ============================================================================
- * 
+ *
  * 이 페이지는 프로젝트 홈 화면으로, 다음 기능을 제공합니다:
  * - 무한 스크롤 마퀴 텍스트 ("OUR PROJECTS - EXPLORE")
  * - 최신 프로젝트 5개의 카드 슬라이더
  * - 프로젝트 카드 클릭 시 상세 모달 표시
- * 
+ *
  * 디자인 기준:
  * - 피그마 디자인: 1728x1114 (데스크탑)
  * - 반응형 스케일링 적용
@@ -29,9 +30,9 @@ const DESIGN_HEIGHT = 1114
 
 /**
  * 무한 스크롤 마퀴 텍스트 컴포넌트
- * 
+ *
  * "OUR PROJECTS - EXPLORE" 텍스트가 무한히 스크롤되는 애니메이션을 제공합니다.
- * 
+ *
  * @param {number} scale - 화면 크기에 따른 스케일 비율
  */
 export const ProjectsShowcaseSection = ({ scale }) => {
@@ -40,23 +41,23 @@ export const ProjectsShowcaseSection = ({ scale }) => {
 
   const fontSize = 220 * scale
   const lineHeight = 281 * scale
-  const topPosition = 120 * scale 
+  const topPosition = 120 * scale
   const height = 293 * scale
 
   return (
     <section
-      className="absolute left-0 w-full overflow-hidden"
+      className='absolute left-0 w-full overflow-hidden'
       style={{
         top: `${topPosition}px`,
         height: `${height}px`,
       }}
-      aria-label="Projects showcase marquee"
+      aria-label='Projects showcase marquee'
     >
-      <div className="flex animate-marquee-slow whitespace-nowrap" style={{ width: 'max-content' }}>
+      <div className='flex animate-marquee-slow whitespace-nowrap' style={{ width: 'max-content' }}>
         {marqueeItems.map((text, index) => (
           <span
             key={index}
-            className="inline-block px-4 md:px-16 text-white"
+            className='inline-block px-4 text-white md:px-16'
             style={{
               fontFamily: "'Space Grotesk', Helvetica, sans-serif",
               fontSize: `${fontSize}px`,
@@ -122,10 +123,10 @@ export default function ProjectsHome() {
   // ============================================================================
   // 슬라이더 네비게이션 함수
   // ============================================================================
-  
+
   /**
    * 다음 프로젝트 카드로 이동
-   * 
+   *
    * 동작 조건:
    * - 5번 카드가 초기 1번 카드 자리에 올 때까지 이동 가능
    * - 화면에 3개 카드가 보이므로, 5번 카드가 1번 자리에 오려면 4번 카드까지 사라져야 함
@@ -140,7 +141,7 @@ export default function ProjectsHome() {
 
   /**
    * 이전 프로젝트 카드로 이동
-   * 
+   *
    * 동작 조건:
    * - currentIndex가 0보다 클 때만 이동 가능
    * - currentIndex가 0이면 < 버튼이 비활성화됨
@@ -224,7 +225,7 @@ export default function ProjectsHome() {
   // 데스크탑 레이아웃만
   return (
     <div
-      className="bg-[#1A1A1A] text-white font-sans relative"
+      className='bg-[#1A1A1A] text-white font-sans relative'
       style={{
         width: '100vw',
         height: '100vh',
@@ -233,10 +234,10 @@ export default function ProjectsHome() {
     >
       <Header />
 
-      <main className="relative h-full pt-20" style={{ height: 'calc(100vh - 80px)' }}>
+      <main className='relative h-full pt-20' style={{ height: 'calc(100vh - 80px)' }}>
         {/* 배경 이미지 */}
         <div
-          className="fixed bg-center bg-no-repeat"
+          className='fixed bg-center bg-no-repeat'
           style={{
             backgroundImage: `url(${bkImage1})`,
             backgroundSize: '100% auto',
@@ -252,7 +253,7 @@ export default function ProjectsHome() {
 
         {/* 배경 노이즈 텍스처 */}
         <div
-          className="fixed opacity-30 mix-blend-overlay"
+          className='fixed opacity-30 mix-blend-overlay'
           style={{
             backgroundImage: `url(${noiseTexture})`,
             backgroundRepeat: 'repeat',
@@ -265,17 +266,28 @@ export default function ProjectsHome() {
           }}
         />
 
-        <div className="relative z-10" style={{ minHeight: 'calc(100vh - 80px)' }}>
-
+        <div className='relative z-10' style={{ minHeight: 'calc(100vh - 80px)' }}>
           {/* 무한 마퀴 텍스트 */}
           <ProjectsShowcaseSection scale={scale} />
 
           {/* 컨텐츠 영역 - 화면 전체 너비 사용 */}
-          <div className="w-full relative" style={{ minHeight: 'calc(100vh - 400px)', paddingTop: `${(190 + 293 + 92) * scale}px` }}>
-            <div className="w-full relative" style={{ paddingLeft: 'max(1rem, calc((100vw - 1280px) / 2))', paddingRight: 'max(1rem, calc((100vw - 1280px) / 2))' }}>
+          <div
+            className='relative w-full'
+            style={{
+              minHeight: 'calc(100vh - 400px)',
+              paddingTop: `${(190 + 293 + 92) * scale}px`,
+            }}
+          >
+            <div
+              className='relative w-full'
+              style={{
+                paddingLeft: 'max(1rem, calc((100vw - 1280px) / 2))',
+                paddingRight: 'max(1rem, calc((100vw - 1280px) / 2))',
+              }}
+            >
               {/* Works 텍스트 */}
               <h3
-                className="absolute font-bold text-white"
+                className='absolute font-bold text-white'
                 style={{
                   fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                   fontSize: `${60 * scale}px`,
@@ -293,7 +305,7 @@ export default function ProjectsHome() {
               <button
                 onClick={handlePrev}
                 disabled={currentIndex === 0}
-                className="absolute rounded-full border transition-opacity disabled:opacity-50 active:opacity-70 flex items-center justify-center focus:outline-none"
+                className='absolute flex items-center justify-center transition-opacity border rounded-full disabled:opacity-50 active:opacity-70 focus:outline-none'
                 onMouseDown={(e) => {
                   e.currentTarget.style.opacity = '0.7'
                 }}
@@ -311,21 +323,21 @@ export default function ProjectsHome() {
                   background: '#1A1A1A',
                   borderColor: '#D9D9D9',
                 }}
-                aria-label="이전 프로젝트"
+                aria-label='이전 프로젝트'
               >
                 <svg
                   width={`${24 * scale}`}
                   height={`${24 * scale}`}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
                   <path
-                    d="M15 18L9 12L15 6"
-                    stroke="white"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    d='M15 18L9 12L15 6'
+                    stroke='white'
+                    strokeWidth='3'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                 </svg>
               </button>
@@ -334,7 +346,7 @@ export default function ProjectsHome() {
               <button
                 onClick={handleNext}
                 disabled={currentIndex >= projects.length - 2}
-                className="absolute rounded-full border transition-opacity disabled:opacity-50 active:opacity-70 flex items-center justify-center focus:outline-none"
+                className='absolute flex items-center justify-center transition-opacity border rounded-full disabled:opacity-50 active:opacity-70 focus:outline-none'
                 onMouseDown={(e) => {
                   e.currentTarget.style.opacity = '0.7'
                 }}
@@ -352,29 +364,29 @@ export default function ProjectsHome() {
                   background: '#FFFFFF',
                   borderColor: '#1A1A1A',
                 }}
-                aria-label="다음 프로젝트"
+                aria-label='다음 프로젝트'
               >
                 <svg
                   width={`${24 * scale}`}
                   height={`${24 * scale}`}
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox='0 0 24 24'
+                  fill='none'
+                  xmlns='http://www.w3.org/2000/svg'
                 >
                   <path
-                    d="M9 18L15 12L9 6"
-                    stroke="#1A1A1A"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    d='M9 18L15 12L9 6'
+                    stroke='#1A1A1A'
+                    strokeWidth='3'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
                   />
                 </svg>
               </button>
 
               {/* More project? 버튼 */}
               <Link
-                to="/projects"
-                className="absolute border rounded-lg flex items-center justify-center transition-opacity hover:opacity-80"
+                to='/projects'
+                className='absolute flex items-center justify-center transition-opacity border rounded-lg hover:opacity-80'
                 style={{
                   width: `${280 * scale}px`,
                   height: `${120 * scale}px`,
@@ -385,7 +397,7 @@ export default function ProjectsHome() {
                 }}
               >
                 <span
-                  className="font-bold text-white text-center"
+                  className='font-bold text-center text-white'
                   style={{
                     fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                     fontSize: `${28 * scale}px`,
@@ -398,7 +410,7 @@ export default function ProjectsHome() {
 
               {/* 프로젝트 카드 슬라이더 - 화면 전체 너비 기준 */}
               <div
-                className="absolute overflow-hidden"
+                className='absolute overflow-hidden'
                 style={{
                   left: `${(437 + 200 + 100) * scale}px`,
                   top: `${(92 - 200 + 120) * scale}px`,
@@ -407,9 +419,11 @@ export default function ProjectsHome() {
                 }}
               >
                 <div
-                  className="flex select-none"
+                  className='flex select-none'
                   style={{
-                    transform: `translateX(calc(-${currentIndex * (cardWidth + cardGap)}px + ${dragOffset}px))`,
+                    transform: `translateX(calc(-${
+                      currentIndex * (cardWidth + cardGap)
+                    }px + ${dragOffset}px))`,
                     width: `${(cardWidth + cardGap) * projects.length - cardGap}px`,
                     transition: isDragging ? 'none' : 'transform 0.5s ease-in-out',
                     touchAction: 'pan-y',
@@ -437,7 +451,7 @@ export default function ProjectsHome() {
                             setIsModalOpen(true)
                           }
                         }}
-                        className="flex-shrink-0 relative rounded-xl border bg-[#1A1A1A] block cursor-pointer hover:opacity-90 transition-opacity"
+                        className='flex-shrink-0 relative rounded-xl border bg-[#1A1A1A] block cursor-pointer hover:opacity-90 transition-opacity'
                         style={{
                           width: `${cardWidth}px`,
                           height: `${cardHeight}px`,
@@ -449,7 +463,8 @@ export default function ProjectsHome() {
                           const numberEl = e.currentTarget.querySelector('.project-number')
                           if (numberEl) {
                             numberEl.style.color = '#FB923C'
-                            numberEl.style.textShadow = '0 0 6px rgba(251, 146, 60, 0.5), 0 0 10px rgba(251, 146, 60, 0.3)'
+                            numberEl.style.textShadow =
+                              '0 0 6px rgba(251, 146, 60, 0.5), 0 0 10px rgba(251, 146, 60, 0.3)'
                           }
                         }}
                         onMouseLeave={(e) => {
@@ -460,70 +475,74 @@ export default function ProjectsHome() {
                           }
                         }}
                       >
-                      {/* 프로젝트 이미지 */}
-                      <div
-                        className="absolute"
-                        style={{
-                          width: `${165 * scale}px`, // 185 - 20 = 165
-                          height: `${165 * scale}px`, // 185 - 20 = 165
-                          left: `${54 * scale}px`,
-                          top: `${26 * scale}px`, // 상단 여백 26px
-                        }}
-                      >
-                        <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-                      </div>
+                        {/* 프로젝트 이미지 */}
+                        <div
+                          className='absolute'
+                          style={{
+                            width: `${165 * scale}px`, // 185 - 20 = 165
+                            height: `${165 * scale}px`, // 185 - 20 = 165
+                            left: `${54 * scale}px`,
+                            top: `${26 * scale}px`, // 상단 여백 26px
+                          }}
+                        >
+                          <img
+                            src={project.image}
+                            alt={project.title}
+                            className='object-cover w-full h-full'
+                          />
+                        </div>
 
-                      {/* 프로젝트 제목 */}
-                      <div
-                        className="absolute font-bold text-white whitespace-nowrap"
-                        style={{
-                          fontFamily: "'Space Grotesk', Helvetica, sans-serif",
-                          fontSize: `${40 * scale}px`,
-                          lineHeight: `${51 * scale}px`,
-                          left: `${54 * scale}px`,
-                          top: `${(26 + 165 + 20 + 22) * scale}px`, // 이미지 하단(26 + 165) + 간격(20) + 하단 이동(22)
-                          width: `${(cardWidth - 54 - 78 - 20) * scale}px`, // 카드 너비 - 좌측 여백 - 번호 영역 - 간격
-                          height: `${51 * scale}px`,
-                        }}
-                      >
-                        {project.title}
-                      </div>
+                        {/* 프로젝트 제목 */}
+                        <div
+                          className='absolute font-bold text-white whitespace-nowrap'
+                          style={{
+                            fontFamily: "'Space Grotesk', Helvetica, sans-serif",
+                            fontSize: `${40 * scale}px`,
+                            lineHeight: `${51 * scale}px`,
+                            left: `${54 * scale}px`,
+                            top: `${(26 + 165 + 20 + 22) * scale}px`, // 이미지 하단(26 + 165) + 간격(20) + 하단 이동(22)
+                            width: `${(cardWidth - 54 - 78 - 20) * scale}px`, // 카드 너비 - 좌측 여백 - 번호 영역 - 간격
+                            height: `${51 * scale}px`,
+                          }}
+                        >
+                          {project.title}
+                        </div>
 
-                      {/* 프로젝트 설명 */}
-                      <div
-                        className="absolute font-bold text-white whitespace-nowrap"
-                        style={{
-                          fontFamily: "'Space Grotesk', Helvetica, sans-serif",
-                          fontSize: `${24 * scale}px`,
-                          lineHeight: `${31 * scale}px`,
-                          left: `${54 * scale}px`,
-                          top: `${(26 + 165 + 20 + 51 + 10 + 22) * scale}px`, // 제목 하단 + 간격 + 하단 이동(22)
-                          width: `${(cardWidth - 54 - 78 - 20) * scale}px`, // 카드 너비 - 좌측 여백 - 번호 영역 - 간격
-                          height: `${31 * scale}px`,
-                        }}
-                      >
-                        {project.desc}
-                      </div>
+                        {/* 프로젝트 설명 */}
+                        <div
+                          className='absolute font-bold text-white whitespace-nowrap'
+                          style={{
+                            fontFamily: "'Space Grotesk', Helvetica, sans-serif",
+                            fontSize: `${24 * scale}px`,
+                            lineHeight: `${31 * scale}px`,
+                            left: `${54 * scale}px`,
+                            top: `${(26 + 165 + 20 + 51 + 10 + 22) * scale}px`, // 제목 하단 + 간격 + 하단 이동(22)
+                            width: `${(cardWidth - 54 - 78 - 20) * scale}px`, // 카드 너비 - 좌측 여백 - 번호 영역 - 간격
+                            height: `${31 * scale}px`,
+                          }}
+                        >
+                          {project.desc}
+                        </div>
 
-                      {/* 프로젝트 번호 */}
-                      <div
-                        className="project-number absolute font-bold flex items-center justify-center"
-                        style={{
-                          fontFamily: "'Space Grotesk', Helvetica, sans-serif",
-                          fontSize: `${70 * scale}px`,
-                          lineHeight: `${89 * scale}px`,
-                          color: '#5E5E5E',
-                          right: `${36 * scale}px`, // 우측 여백 36px
-                          bottom: `${22 * scale}px`, // 하단 여백 22px
-                          width: `${78 * scale}px`,
-                          height: `${89 * scale}px`,
-                          transition: 'color 0.3s ease, text-shadow 0.3s ease',
-                        }}
-                      >
-                        {String(index + 1).padStart(2, '0')}
+                        {/* 프로젝트 번호 */}
+                        <div
+                          className='absolute flex items-center justify-center font-bold project-number'
+                          style={{
+                            fontFamily: "'Space Grotesk', Helvetica, sans-serif",
+                            fontSize: `${70 * scale}px`,
+                            lineHeight: `${89 * scale}px`,
+                            color: '#5E5E5E',
+                            right: `${36 * scale}px`, // 우측 여백 36px
+                            bottom: `${22 * scale}px`, // 하단 여백 22px
+                            width: `${78 * scale}px`,
+                            height: `${89 * scale}px`,
+                            transition: 'color 0.3s ease, text-shadow 0.3s ease',
+                          }}
+                        >
+                          {String(index + 1).padStart(2, '0')}
+                        </div>
                       </div>
-                    </div>
-                  )
+                    )
                   })}
                 </div>
               </div>
@@ -531,6 +550,8 @@ export default function ProjectsHome() {
           </div>
         </div>
       </main>
+
+      <Footer />
 
       {/* 프로젝트 상세 모달 */}
       <ProjectDetailModal

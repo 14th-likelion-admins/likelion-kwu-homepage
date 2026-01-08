@@ -21,9 +21,10 @@
  *    클래스를 적용했습니다.
  */
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import ProjectDetailModal from '../components/ProjectDetailModal'
 import { getAllProjects } from '../data/projectsData'
 
@@ -95,7 +96,7 @@ export default function Projects() {
           loadMoreProjects()
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     )
 
     const currentTarget = observerTarget.current
@@ -147,38 +148,38 @@ export default function Projects() {
   const visibleProjects = filteredProjects.slice(0, displayedProjects)
 
   return (
-    <div className="bg-[#1A1A1A] text-white font-sans min-h-screen">
+    <div className='bg-[#1A1A1A] text-white font-sans min-h-screen'>
       <Header />
 
-      <main className="relative pt-12 md:pt-20 pb-16 px-4 md:px-6 lg:px-8 max-w-7xl mx-auto">
+      <main className='relative px-4 pt-12 pb-16 mx-auto md:pt-20 md:px-6 lg:px-8 max-w-7xl'>
         {/* 제목과 뒤로가기 버튼 */}
-        <div className="flex items-center gap-4 mb-6 md:mb-12 mt-4 md:mt-12">
+        <div className='flex items-center gap-4 mt-4 mb-6 md:mb-12 md:mt-12'>
           <Link
-            to="/projectshome"
-            className="hidden md:flex items-center justify-center flex-shrink-0"
+            to='/projectshome'
+            className='items-center justify-center flex-shrink-0 hidden md:flex'
             style={{
               width: '24px',
               height: '24px',
             }}
           >
             <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+              width='24'
+              height='24'
+              viewBox='0 0 24 24'
+              fill='none'
+              xmlns='http://www.w3.org/2000/svg'
             >
               <path
-                d="M15 18L9 12L15 6"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                d='M15 18L9 12L15 6'
+                stroke='white'
+                strokeWidth='2'
+                strokeLinecap='round'
+                strokeLinejoin='round'
               />
             </svg>
           </Link>
           <h2
-            className="hidden md:block text-lg md:text-xl lg:text-2xl font-bold m-0"
+            className='hidden m-0 text-lg font-bold md:block md:text-xl lg:text-2xl'
             style={{
               fontFamily: "'Space Grotesk', Helvetica, sans-serif",
               lineHeight: '1.2',
@@ -189,14 +190,14 @@ export default function Projects() {
         </div>
 
         {/* 드롭다운 필터 */}
-        <div className="flex flex-wrap gap-4 pl-0 mt-6 mb-6">
+        <div className='flex flex-wrap gap-4 pl-0 mt-6 mb-6'>
           {/* 기수 드롭다운 */}
-          <div className="relative dropdown-container">
+          <div className='relative dropdown-container'>
             <button
               onClick={() => {
                 setShowGenerationDropdown(!showGenerationDropdown)
               }}
-              className="border border-white rounded-full px-4 py-2 flex items-center justify-center gap-3 bg-[#1A1A1A] hover:bg-white/10 transition-colors"
+              className='border border-white rounded-full px-4 py-2 flex items-center justify-center gap-3 bg-[#1A1A1A] hover:bg-white/10 transition-colors'
               style={{
                 fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                 fontSize: 'clamp(12px, 1vw, 16px)',
@@ -206,25 +207,25 @@ export default function Projects() {
             >
               <span>{selectedGeneration}</span>
               <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+                width='20'
+                height='20'
+                viewBox='0 0 24 24'
+                fill='none'
+                xmlns='http://www.w3.org/2000/svg'
                 style={{ transform: 'rotate(90deg)' }}
               >
                 <path
-                  d="M9 18L15 12L9 6"
-                  stroke="white"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
+                  d='M9 18L15 12L9 6'
+                  stroke='white'
+                  strokeWidth='2'
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
                 />
               </svg>
             </button>
             {showGenerationDropdown && (
               <div
-                className="absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-50 min-w-full shadow-lg"
+                className='absolute mt-2 border border-white rounded-2xl bg-[#1A1A1A] z-50 min-w-full shadow-lg'
                 style={{ overflow: 'visible' }}
               >
                 {generations.map((gen) => (
@@ -234,7 +235,7 @@ export default function Projects() {
                       setSelectedGeneration(gen)
                       setShowGenerationDropdown(false)
                     }}
-                    className="w-full text-center px-6 py-3 md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                    className='w-full px-6 py-3 text-center transition-colors md:px-8 md:py-4 hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg'
                     style={{
                       fontFamily: "'Space Grotesk', Helvetica, sans-serif",
                       fontSize: 'clamp(12px, 1vw, 16px)',
@@ -253,7 +254,7 @@ export default function Projects() {
 
         {/* 프로젝트 그리드 */}
         <div
-          className="grid gap-6 md:gap-8"
+          className='grid gap-6 md:gap-8'
           style={{
             gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
           }}
@@ -262,7 +263,7 @@ export default function Projects() {
             <div
               key={project.id}
               id={`project-${project.id}`}
-              className="border border-white/50 rounded-3xl bg-[#1A1A1A] overflow-hidden hover:border-white transition-colors cursor-pointer"
+              className='border border-white/50 rounded-3xl bg-[#1A1A1A] overflow-hidden hover:border-white transition-colors cursor-pointer'
               onClick={() => {
                 setSelectedProject(project)
                 setIsModalOpen(true)
@@ -270,7 +271,7 @@ export default function Projects() {
             >
               {/* 프로젝트 이미지 컨테이너 - 좌우여백 37.5, 상단 여백 34 */}
               <div
-                className="relative"
+                className='relative'
                 style={{
                   paddingLeft: '37.5px',
                   paddingRight: '37.5px',
@@ -278,7 +279,7 @@ export default function Projects() {
                 }}
               >
                 <div
-                  className="w-full border border-white rounded-3xl overflow-hidden bg-[#1A1A1A]"
+                  className='w-full border border-white rounded-3xl overflow-hidden bg-[#1A1A1A]'
                   style={{
                     aspectRatio: '375 / 211',
                   }}
@@ -286,17 +287,17 @@ export default function Projects() {
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover"
+                    className='object-cover w-full h-full'
                   />
                 </div>
               </div>
 
               {/* 프로젝트 정보 */}
-              <div className="p-6 md:p-8">
+              <div className='p-6 md:p-8'>
                 {/* 프로젝트 제목과 태그 */}
-                <div className="flex items-end gap-0 mb-4">
+                <div className='flex items-end gap-0 mb-4'>
                   <span
-                    className="text-white"
+                    className='text-white'
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: 'clamp(20px, 2.5vw, 24px)',
@@ -307,7 +308,7 @@ export default function Projects() {
                     {project.title}
                   </span>
                   <span
-                    className="font-bold text-white/50"
+                    className='font-bold text-white/50'
                     style={{
                       fontFamily: "'Inter', sans-serif",
                       fontSize: 'clamp(14px, 1.8vw, 18px)',
@@ -321,7 +322,7 @@ export default function Projects() {
 
                 {/* 프로젝트 설명 */}
                 <p
-                  className="text-white"
+                  className='text-white'
                   style={{
                     fontFamily: "'Inter', sans-serif",
                     fontWeight: 400,
@@ -338,22 +339,19 @@ export default function Projects() {
 
         {/* 무한스크롤 감지 요소 */}
         {displayedProjects < allProjects.length && (
-          <div
-            ref={observerTarget}
-            className="flex justify-center items-center py-8"
-          >
-            {isLoading && <div className="text-white/50">로딩 중...</div>}
+          <div ref={observerTarget} className='flex items-center justify-center py-8'>
+            {isLoading && <div className='text-white/50'>로딩 중...</div>}
           </div>
         )}
 
         {/* UP 버튼 */}
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#5E5E5E] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity z-50"
-          aria-label="맨 위로"
+          className='fixed bottom-8 right-8 w-12 h-12 md:w-16 md:h-16 rounded-full bg-[#5E5E5E] flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity z-50'
+          aria-label='맨 위로'
         >
           <div
-            className="w-3 h-3 border-4 border-black"
+            className='w-3 h-3 border-4 border-black'
             style={{
               borderTop: 'none',
               borderRight: 'none',
@@ -372,7 +370,7 @@ export default function Projects() {
           setSelectedProject(null)
         }}
       />
+      <Footer />
     </div>
   )
-
 }
